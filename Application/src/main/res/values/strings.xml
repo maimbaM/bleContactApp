@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bt_not_enabled_leaving">User declined to enable Bluetooth, exiting Bluetooth Advertisements.</string>
-    <string name="activity_main_title">Ble Contact Tracing App</string>
-    <string name="broadcast_device">Broadcast Device</string>
+    <string name="activity_main_title">Ble Contact Tracing</string>
+    <string name="start_advertising">Start Application</string>
 
     <string name="bt_not_supported">Bluetooth is not supported on this device.</string>
     <string name="bt_ads_not_supported">Bluetooth Advertisements are not supported on this device.</string>
 
     <string name="refresh">Refresh</string>
+    <string name="next_page">Next Page</string>
     <string name="start_error_prefix">Start Advertising failed: </string>
     <string name="start_error_already_started">already started.</string>
     <string name="start_error_too_large">data packet exceeded 31 Byte limit.</string>
@@ -29,5 +30,8 @@
     <string name="no_name">(no name)</string>
     <string name="start_error_unknown">unknown error</string>
     <string name="advertising_timedout">Advertising stopped due to timeout.</string>
+    <string name="currentOutbreak">Symptoms Of Current Outbreak</string>
+    <string name="statusReport">Report Positive Case</string>
+    <string name="noExposures">Check Exposure</string>
 
 </resources>

@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("create Table ScannedPackets(id INTEGER primary key AUTOINCREMENT,pktData TEXT, timeSeen TEXT)");
+        DB.execSQL("create Table ScannedPackets(id INTEGER primary key AUTOINCREMENT,pktData TEXT, timeSeen datetime default current_timestamp)");
 
     }
 
@@ -22,11 +22,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public Boolean insertpktdata( String pktData, String timeSeen){
+    public Boolean insertpktdata( String pktData){
         SQLiteDatabase DB = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("pktData", pktData);
-        contentValues.put("timeSeen", timeSeen);
         long result=DB.insert("ScannedPackets",null,contentValues);
         if (result==-1){
             return false;
@@ -39,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean deletepktdata(){
         SQLiteDatabase DB = this.getWritableDatabase();
 
-       long result = DB.delete("ScannedPackets","timeSeen = ?", new String[]{"(timeSeen<= datetime('now', '-4 days'))"} );
+       long result = DB.delete("ScannedPackets","timeSeen = ?", new String[]{"(timeSeen<= datetime('now', '-14 days'))"} );
         if (result==-1){
             return false;
         }else {

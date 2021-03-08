@@ -17,6 +17,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  * Setup display fragments and ensure the device supports Bluetooth.
@@ -32,6 +35,11 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(R.string.activity_main_title);
+
+        /*Date currentTime = Calendar.getInstance().getTime();
+        System.out.println(currentTime);
+         */
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
         }

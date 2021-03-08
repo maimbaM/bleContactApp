@@ -13,6 +13,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
@@ -29,6 +31,7 @@ public class ScanResultAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     DBHelper DB;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     ScanResultAdapter(Context context, LayoutInflater inflater) {
         super();
@@ -90,7 +93,7 @@ public class ScanResultAdapter extends BaseAdapter {
          */
         deviceNameView.setText(pdata);
         deviceAddressView.setText(scanResult.getDevice().getAddress());
-        lastSeenView.setText(getTimeSinceString(mContext, scanResult.getTimestampNanos()));
+        //lastSeenView.setText(getTimeSinceString(mContext, scanResult.getTimestampNanos()));
 
         return view;
     }
@@ -115,12 +118,18 @@ public class ScanResultAdapter extends BaseAdapter {
      * Otherwise updates the existing position with the new ScanResult.
      */
     public void add(ScanResult scanResult) {
+        ScanRecord datainpacket = scanResult.getScanRecord();
+        byte[] pd = datainpacket.getServiceData(Constants.Service_UUID);
+        String byteData = new String(pd);
+
+
 
         int existingPosition = getPosition(scanResult.getDevice().getAddress());
 
         if (existingPosition >= 0) {
             // Device is already in list, update its record.
             mArrayList.set(existingPosition, scanResult);
+            DB.insertpktdata(byteData);
         } else {
             // Add new Device's ScanResult to list.
             mArrayList.add(scanResult);
@@ -138,7 +147,9 @@ public class ScanResultAdapter extends BaseAdapter {
      * Takes in a number of nanoseconds and returns a human-readable string giving a vague
      * description of how long ago that was.
      */
+    /*
     public static String getTimeSinceString(Context context, long timeNanoseconds) {
+
         String lastSeenText = context.getResources().getString(R.string.last_seen) + " ";
 
         long timeSince = SystemClock.elapsedRealtimeNanos() - timeNanoseconds;
@@ -173,4 +184,6 @@ public class ScanResultAdapter extends BaseAdapter {
 
         return lastSeenText;
     }
+
+     */
 }

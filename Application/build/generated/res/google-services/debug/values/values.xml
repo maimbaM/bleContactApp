@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">773372374782-md25s2fbck1d4572f7e9874571gre2rl.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">773372374782</string>
+    <string name="google_api_key" translatable="false">AIzaSyDjlhBHcWJq5G6pEvKNNiy-xyX1OM-RQNk</string>
+    <string name="google_app_id" translatable="false">1:773372374782:android:d805e955bc5ce4e2233faf</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDjlhBHcWJq5G6pEvKNNiy-xyX1OM-RQNk</string>
+    <string name="google_storage_bucket" translatable="false">contactblefin.appspot.com</string>
+    <string name="project_id" translatable="false">contactblefin</string>
+</resources>
