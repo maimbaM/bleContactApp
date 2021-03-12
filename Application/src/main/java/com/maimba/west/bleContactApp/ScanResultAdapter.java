@@ -5,6 +5,7 @@ package com.maimba.west.bleContactApp;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
+import android.content.Intent;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ScanResultAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     DBHelper DB;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
 
     ScanResultAdapter(Context context, LayoutInflater inflater) {
@@ -77,6 +79,7 @@ public class ScanResultAdapter extends BaseAdapter {
         //String name = scanResult.getDevice().getName();
         byte[] pkData = record.getServiceData(Constants.Service_UUID);
         String pdata = new String(pkData);
+
         /*
         StringBuilder builder = new StringBuilder();
         for (byte value : pkData) {
@@ -124,12 +127,14 @@ public class ScanResultAdapter extends BaseAdapter {
 
 
 
+
         int existingPosition = getPosition(scanResult.getDevice().getAddress());
 
         if (existingPosition >= 0) {
             // Device is already in list, update its record.
             mArrayList.set(existingPosition, scanResult);
             DB.insertpktdata(byteData);
+
         } else {
             // Add new Device's ScanResult to list.
             mArrayList.add(scanResult);

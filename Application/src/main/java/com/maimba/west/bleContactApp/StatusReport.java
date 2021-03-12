@@ -22,14 +22,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.maimba.west.bleContactApp.AdvertiserService.EXTRA_MESSAGE;
+
 public class StatusReport extends AppCompatActivity {
 
     public static final String TAG = "Report Case success";
     public static final String dName = "Report Case success";
+
     Button reportButton;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-    String userid , diseaseName;
+    String userid , diseaseName,userpktdata;
     DocumentReference diseaseref =  fStore.collection("Diseases").document("Coronavirus");
 
 
@@ -38,6 +41,9 @@ public class StatusReport extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status_report);
+
+
+        userpktdata= Constants.bleServiceData;
 
         reportButton = findViewById(R.id.buttonReport);
         fAuth = FirebaseAuth.getInstance();
@@ -76,11 +82,12 @@ public class StatusReport extends AppCompatActivity {
                     DocumentReference casesCollection = fStore.collection("cases").document(userid);
                     Map<String,Object> positive_case = new HashMap<>();
                     positive_case.put("Disease",diseaseName);
+                    positive_case.put("User Packet Data",userpktdata);
                     positive_case.put("Date Reported", FieldValue.serverTimestamp());
                     casesCollection.set(positive_case).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "onSuccess: Case reported for: " + userid);
+                            Log.d(TAG, "onSuccess: Case reported for: " + userpktdata);
                         }
                     });
 

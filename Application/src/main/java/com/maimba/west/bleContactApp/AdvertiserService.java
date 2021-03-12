@@ -36,6 +36,7 @@ public class AdvertiserService extends Service {
     private static final String TAG = AdvertiserService.class.getSimpleName();
 
     private static final int FOREGROUND_NOTIFICATION_ID = 1;
+    public static final String EXTRA_MESSAGE = "com.maimba.west.bleContactApp.pdata";
     private int importance = NotificationManager.IMPORTANCE_LOW;
 
     /**
@@ -47,7 +48,7 @@ public class AdvertiserService extends Service {
     public static boolean running = false;
 
     public static final String ADVERTISING_FAILED =
-        "com.example.android.bleContactApp.advertising_failed";
+        "com.maimba.west.bleContactApp.advertising_failed";
 
     public static final String ADVERTISING_FAILED_EXTRA_CODE = "failureCode";
 
@@ -72,6 +73,7 @@ public class AdvertiserService extends Service {
         initialize();
         startAdvertising();
         setTimeout();
+
         super.onCreate();
     }
 
@@ -239,8 +241,10 @@ public class AdvertiserService extends Service {
         dataBuilder.setIncludeDeviceName(false);
 
         /* For example - this will cause advertising to fail (exceeds size limit) */
-        String failureData = "qwertyuiopasdfghjklz";
+        String failureData = Constants.bleServiceData;
         dataBuilder.addServiceData(Constants.Service_UUID, failureData.getBytes());
+
+
 
         return dataBuilder.build();
     }
