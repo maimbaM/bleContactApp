@@ -38,7 +38,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean deletepktdata(){
         SQLiteDatabase DB = this.getWritableDatabase();
 
-       long result = DB.delete("ScannedPackets","timeSeen = ?", new String[]{"(timeSeen<= datetime('now', '-14 days'))"} );
+        long result = DB.delete("ScannedPackets","timeSeen = ?", new String[]{"(timeSeen<= datetime('now', '-14 days'))"} );
         if (result==-1){
             return false;
         }else {

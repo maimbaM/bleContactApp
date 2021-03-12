@@ -16,22 +16,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".ScreenMain"></activity>
+        <activity android:name=".RegisterUser"></activity>
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            tools:ignore="Instantiatable">
+            android:name=".StatusReport"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ScreenMain" />
+        <activity android:name=".ExposureCheck" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".Symptoms" />
 
         <service
             android:name=".AdvertiserService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -33,5 +33,7 @@
     <string name="currentOutbreak">Symptoms Of Current Outbreak</string>
     <string name="statusReport">Report Positive Case</string>
     <string name="noExposures">Check Exposure</string>
+    <string name="buttonReport">Report Positive Case</string>
+    <string name="report_positive_case">Report Positive Case</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,10 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
      */
     private Switch mSwitch;
 
+    Button NexttoMaintwo;
+
+
+
     /**
      * Listens for notifications that the {@code AdvertiserService} has failed to start advertising.
      * This Receiver deals with Fragment UI elements and only needs to be active when the Fragment
@@ -38,6 +43,18 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*
+        NexttoMaintwo = getActivity().getApplicationContext()findViewById(R.id.buttonNext);
+
+
+       NexttoMaintwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getView(),ExposureCheck.class));
+            }
+        });
+
+       */
         advertisingFailureReceiver = new BroadcastReceiver() {
 
             /**

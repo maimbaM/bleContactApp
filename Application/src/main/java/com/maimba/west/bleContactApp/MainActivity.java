@@ -17,6 +17,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,6 +32,7 @@ public class MainActivity extends FragmentActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,8 @@ public class MainActivity extends FragmentActivity {
         /*Date currentTime = Calendar.getInstance().getTime();
         System.out.println(currentTime);
          */
+        fAuth = FirebaseAuth.getInstance();
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
@@ -78,6 +84,22 @@ public class MainActivity extends FragmentActivity {
                 showErrorText(R.string.bt_not_supported);
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser mfirebaseuser =fAuth.getCurrentUser();
+
+        if (mfirebaseuser!=null){
+            //user logged in
+
+        }else {
+            //Not Registered
+            startActivity(new Intent(this,RegisterUser.class));
+            finish();
+        }
+
     }
 
     @Override
