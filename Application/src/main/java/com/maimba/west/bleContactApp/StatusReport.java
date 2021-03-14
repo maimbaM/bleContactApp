@@ -48,6 +48,10 @@ public class StatusReport extends AppCompatActivity {
         reportButton = findViewById(R.id.buttonReport);
         fAuth = FirebaseAuth.getInstance();
 
+        /**
+         * Get disease name
+         */
+
         diseaseref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -79,8 +83,9 @@ public class StatusReport extends AppCompatActivity {
             reportButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DocumentReference casesCollection = fStore.collection("cases").document(userid);
+                    DocumentReference casesCollection = fStore.collection("cases").document();
                     Map<String,Object> positive_case = new HashMap<>();
+                    positive_case.put("USER ID",userid);
                     positive_case.put("Disease",diseaseName);
                     positive_case.put("User Packet Data",userpktdata);
                     positive_case.put("Date Reported", FieldValue.serverTimestamp());

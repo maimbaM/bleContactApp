@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.firebase.Timestamp;
+
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, "Blepackets.db", null, 1);
@@ -13,6 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
         DB.execSQL("create Table ScannedPackets(id INTEGER primary key AUTOINCREMENT,pktData TEXT, timeSeen datetime default current_timestamp)");
+        DB.execSQL("create Table ExposurePackets(id INTEGER primary key AUTOINCREMENT,exposurePktData TEXT, dateReported datetime)");
 
     }
 
@@ -27,6 +30,20 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("pktData", pktData);
         long result=DB.insert("ScannedPackets",null,contentValues);
+        if (result==-1){
+            return false;
+        }else {
+            return true;
+        }
+
+
+    }
+    public Boolean insertExposurePktdata(String exposurePktData){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("exposurePktData", exposurePktData);
+//        contentValues.put("dateReported", String.valueOf(dateReported));
+        long result=DB.insert("ExposurePackets",null,contentValues);
         if (result==-1){
             return false;
         }else {

@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".RegisterUser"></activity>
         <activity
-            android:name=".StatusReport"
+            android:name=".ExposureCheck"
             android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScreenMain" />
-        <activity android:name=".ExposureCheck" />
+        <activity android:name=".StatusReport" />
         <activity android:name=".MainActivity" />
         <activity android:name=".Symptoms" />
 
