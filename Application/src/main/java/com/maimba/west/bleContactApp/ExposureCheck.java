@@ -1,5 +1,6 @@
 package com.maimba.west.bleContactApp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,7 @@ public class ExposureCheck extends AppCompatActivity {
     private String casesnap;
     Button checkExposure;
     private String TAG;
-    DBHelper DB;
+    DBHelper DB ;
     //List<String> mcases = new ArrayList<>();
 
 
@@ -36,10 +37,13 @@ public class ExposureCheck extends AppCompatActivity {
 
 
         checkExposure = findViewById(R.id.buttonCheckExposure);
+        DB = new DBHelper(getApplicationContext());
+
 
         checkExposure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                Calendar dayPeriod = Calendar.getInstance();
 //                dayPeriod.add(Calendar.DATE,-2);
 //                dayPeriod.getTime();
