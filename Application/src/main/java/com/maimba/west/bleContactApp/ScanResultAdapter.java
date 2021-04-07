@@ -7,12 +7,20 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.DB.ScannedPacket;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,16 +28,19 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * Holds and displays {@link ScanResult}s, used by {@link ScannerFragment}.
+ * Holds and displays {@link ScanResult}s, used by ScannerFragment}.
  */
 public class ScanResultAdapter extends BaseAdapter {
 
 
+    private static final String TAG = "ScanResultAdapter";
     private ArrayList<ScanResult> mArrayList;
 
     private Context mContext;
 
     private LayoutInflater mInflater;
+
+    private PacketsViewModel packetsViewModel;
     DBHelper DB;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -40,7 +51,8 @@ public class ScanResultAdapter extends BaseAdapter {
         mContext = context;
         mInflater = inflater;
         mArrayList = new ArrayList<>();
-        DB = new DBHelper(mContext);
+//        DB = new DBHelper(mContext);
+
     }
 
     @Override
@@ -133,12 +145,15 @@ public class ScanResultAdapter extends BaseAdapter {
         if (existingPosition >= 0) {
             // Device is already in list, update its record.
             mArrayList.set(existingPosition, scanResult);
-            DB.insertpktdata(byteData);
-
+//            DB.insertpktdata(byteData);
+            ScannedPacket scannedPacket = new ScannedPacket(byteData);
+            packetsViewModel.insert(scannedPacket);
+            Log.d(TAG, "add: Added Scan pkts");
         } else {
             // Add new Device's ScanResult to list.
             mArrayList.add(scanResult);
         }
+
     }
 
     /**

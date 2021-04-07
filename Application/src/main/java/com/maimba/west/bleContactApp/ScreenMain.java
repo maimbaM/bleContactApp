@@ -21,7 +21,7 @@ public class ScreenMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_screen_main);
 
         exposure = findViewById(R.id.exposures);
         symptoms = findViewById(R.id.symptoms);

@@ -8,6 +8,8 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -30,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Scans for Bluetooth Low Energy Advertisements matching a filter and displays them to the user.
  */
-public class ScannerFragment extends ListFragment {
+public class   ScannerFragment extends ListFragment {
 
     private static final String TAG = ScannerFragment.class.getSimpleName();
 
@@ -38,6 +40,7 @@ public class ScannerFragment extends ListFragment {
      * Stops scanning after 5 seconds.
      */
     private static final long SCAN_PERIOD = 10000;
+
 
     private BluetoothAdapter mBluetoothAdapter;
 
@@ -48,6 +51,7 @@ public class ScannerFragment extends ListFragment {
     private ScanResultAdapter mAdapter;
 
     private Handler mHandler;
+//    private Intent getScanServiceIntent;
 
     /**
      * Must be called after object creation by MainActivity.
@@ -62,7 +66,7 @@ public class ScannerFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+//        setHasOptionsMenu(true);
         setRetainInstance(true);
 
         // Use getActivity().getApplicationContext() instead of just getActivity() because this
@@ -99,119 +103,164 @@ public class ScannerFragment extends ListFragment {
         // Trigger refresh on app's 1st load
         startScanning();
 
+
+
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.scanner_menu, menu);
-    }
+//    class SampleScanCallback extends ScanCallback {
+//
+//        @Override
+//        public void onBatchScanResults(List<ScanResult> results) {
+//            super.onBatchScanResults(results);
+//
+//            for (ScanResult result : results) {
+//                mAdapter.add(result);
+//            }
+//            mAdapter.notifyDataSetChanged();
+//        }
+//
+//        @Override
+//        public void onScanResult(int callbackType, ScanResult result) {
+//            super.onScanResult(callbackType, result);
+//
+//            mAdapter.add(result);
+//            mAdapter.notifyDataSetChanged();
+//        }
+//
+//        @Override
+//        public void onScanFailed(int errorCode) {
+//            super.onScanFailed(errorCode);
+//            Toast.makeText(getActivity(), "Scan failed with error: " + errorCode, Toast.LENGTH_LONG)
+//                    .show();
+//
+//
+//        }
+//
+//
+//        }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+//    @Override;
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.scanner_menu, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.refresh:
+//                startScanning();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                startScanning();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * Start scanning for BLE Advertisements (& set it up to stop after a set period of time).
-     */
+//    /**
+//     * Start scanning for BLE Advertisements (& set it up to stop after a set period of time).
+//     */
     public void startScanning() {
-        if (mScanCallback == null) {
-            Log.d(TAG, "Starting Scanning");
+        Context s = getActivity();
+        s.startService(getScanServiceIntent(s));
 
-            // Will stop the scanning after a set time.
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    stopScanning();
-                }
-            }, SCAN_PERIOD);
-
-            // Kick off a new scan.
-            mScanCallback = new SampleScanCallback();
-            mBluetoothLeScanner.startScan(buildScanFilters(), buildScanSettings(), mScanCallback);
-
-            String toastText = getString(R.string.scan_start_toast) + " "
-                    + TimeUnit.SECONDS.convert(SCAN_PERIOD, TimeUnit.MILLISECONDS) + " "
-                    + getString(R.string.seconds);
-            Toast.makeText(getActivity(), toastText, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getActivity(), R.string.already_scanning, Toast.LENGTH_SHORT);
-        }
+    }
+    public void stopScanning(){
+        Context s =  getActivity();
+        s.stopService(getScanServiceIntent(s));
+    }
+    private static Intent getScanServiceIntent(Context s) {
+        return new Intent(s, ScannerService.class);
     }
 
-    /**
-     * Stop scanning for BLE Advertisements.
-     */
-    public void stopScanning() {
-        Log.d(TAG, "Stopping Scanning");
-
-        // Stop the scan, wipe the callback.
-        mBluetoothLeScanner.stopScan(mScanCallback);
-        mScanCallback = null;
-
-        // Even if no new results, update 'last seen' times.
-        mAdapter.notifyDataSetChanged();
     }
 
-    /**
-     * Return a List of {@link ScanFilter} objects to filter by Service UUID.
-     */
-    private List<ScanFilter> buildScanFilters() {
-        List<ScanFilter> scanFilters = new ArrayList<>();
+//
+//    /**
+//     * Stop scanning for BLE Advertisements.
+//     */
+//    public void stopScanning() {//    @Override;
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.scanner_menu, menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.refresh:
+//                startScanning();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
-        ScanFilter.Builder builder = new ScanFilter.Builder();
-        // Comment out the below line to see all BLE devices around you
-        builder.setServiceUuid(Constants.Service_UUID);
-        scanFilters.add(builder.build());
+//    /**
+//     * Start scanning for BLE Advertisements (& set it up to stop after a set period of time).
+//     */
+//        Log.d(TAG, "Stopping Scanning");
+//
+//        // Stop the scan, wipe the callback.
+//        mBluetoothLeScanner.stopScan(mScanCallback);
+//        mScanCallback = null;
+//
+//        // Even if no new results, update 'last seen' times.
+//        mAdapter.notifyDataSetChanged();
+//    }
+//
+//    /**
+//     * Return a List of {@link ScanFilter} objects to filter by Service UUID.
+//     */
+//    private List<ScanFilter> buildScanFilters() {
+//        List<ScanFilter> scanFilters = new ArrayList<>();
+//
+//        ScanFilter.Builder builder = new ScanFilter.Builder();
+//        // Comment out the below line to see all BLE devices around you
+//        builder.setServiceUuid(Constants.Service_UUID);
+//        scanFilters.add(builder.build());
+//
+//        return scanFilters;
+//    }
+//
+//    /**
+//     * Return a {@link ScanSettings} object set to use low power (to preserve battery life).
+//     */
+//    private ScanSettings buildScanSettings() {
+//        ScanSettings.Builder builder = new ScanSettings.Builder();
+//        builder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
+//        return builder.build();
+//    }
+//
+//    /**
+//     * Custom ScanCallback object - adds to adapter on success, displays error on failure.
+//     */
+//    private class SampleScanCallback extends ScanCallback {
+//
+//        @Override
+//        public void onBatchScanResults(List<ScanResult> results) {
+//            super.onBatchScanResults(results);
+//
+//            for (ScanResult result : results) {
+//                mAdapter.add(result);
+//            }
+//            mAdapter.notifyDataSetChanged();
+//        }
+//
+//        @Override
+//        public void onScanResult(int callbackType, ScanResult result) {
+//            super.onScanResult(callbackType, result);
+//
+//            mAdapter.add(result);
+//            mAdapter.notifyDataSetChanged();
+//        }
+//
+//        @Override
+//        public void onScanFailed(int errorCode) {
+//            super.onScanFailed(errorCode);
+//            Toast.makeText(getActivity(), "Scan failed with error: " + errorCode, Toast.LENGTH_LONG)
+//                    .show();
+//        }
+//    }
 
-        return scanFilters;
-    }
-
-    /**
-     * Return a {@link ScanSettings} object set to use low power (to preserve battery life).
-     */
-    private ScanSettings buildScanSettings() {
-        ScanSettings.Builder builder = new ScanSettings.Builder();
-        builder.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
-        return builder.build();
-    }
-
-    /**
-     * Custom ScanCallback object - adds to adapter on success, displays error on failure.
-     */
-    private class SampleScanCallback extends ScanCallback {
-
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            super.onBatchScanResults(results);
-
-            for (ScanResult result : results) {
-                mAdapter.add(result);
-            }
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-
-            mAdapter.add(result);
-            mAdapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onScanFailed(int errorCode) {
-            super.onScanFailed(errorCode);
-            Toast.makeText(getActivity(), "Scan failed with error: " + errorCode, Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-}

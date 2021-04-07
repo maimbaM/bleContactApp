@@ -72,7 +72,7 @@ public class AdvertiserService extends Service {
         running = true;
         initialize();
         startAdvertising();
-        setTimeout();
+//        setTimeout();
 
         super.onCreate();
     }
@@ -117,7 +117,7 @@ public class AdvertiserService extends Service {
     }
 
     //@NonNull
-    @TargetApi(26)
+    @TargetApi(29)
     private synchronized String createChannel() {
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -196,6 +196,7 @@ public class AdvertiserService extends Service {
     /**
      * Move service to the foreground, to avoid execution limits on background processes.
      *
+     *
      * Callers should call stopForeground(true) when background work is complete.
      */
     private void goForeground() {
@@ -240,9 +241,9 @@ public class AdvertiserService extends Service {
         dataBuilder.addServiceUuid(Constants.Service_UUID);
         dataBuilder.setIncludeDeviceName(false);
 
-        /* For example - this will cause advertising to fail (exceeds size limit) */
-        String failureData = Constants.bleServiceData;
-        dataBuilder.addServiceData(Constants.Service_UUID, failureData.getBytes());
+        /*  */
+        String userPacketData = Constants.bleServiceData;
+        dataBuilder.addServiceData(Constants.Service_UUID, userPacketData.getBytes());
 
 
 

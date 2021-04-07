@@ -1,5 +1,9 @@
 package com.maimba.west.bleContactApp;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterUser extends AppCompatActivity {
+public class Register extends AppCompatActivity {
     public static final String TAG = "fstoreCreateUser";
     EditText registerEmail,registerPassword;
     Button registerbtn;
@@ -33,7 +37,7 @@ public class RegisterUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_user);
+        setContentView(R.layout.activity_register);
 
         registerEmail = findViewById(R.id.registerEmail);
         registerPassword = findViewById(R.id.registerPassword);
@@ -85,10 +89,11 @@ public class RegisterUser extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RegisterUser.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Register.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
     }
+
 }

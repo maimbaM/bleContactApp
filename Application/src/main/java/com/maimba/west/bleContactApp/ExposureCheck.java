@@ -1,13 +1,19 @@
-package com.maimba.west.bleContactApp;
+ package com.maimba.west.bleContactApp;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,17 +22,32 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.type.DateTime;
+import com.maimba.west.bleContactApp.DB.ExposurePacket;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.DBHelper;
+import com.maimba.west.bleContactApp.R;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ExposureCheck extends AppCompatActivity {
 
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-    private String casesnap;
-    Button checkExposure;
-    private String TAG;
-    DBHelper DB ;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+    public String casesnap;
+    private Button checkExposure;
+    public String TAG;
+    private DBHelper DB ;
+    private PacketsViewModel mpacketsViewModel;
+    private ExposurePacket exposurePacket;
+
+
+
     //List<String> mcases = new ArrayList<>();
 
 
@@ -37,21 +58,26 @@ public class ExposureCheck extends AppCompatActivity {
 
 
         checkExposure = findViewById(R.id.buttonCheckExposure);
-        DB = new DBHelper(getApplicationContext());
+//        DB = new DBHelper(getApplicationContext());
+        mpacketsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
 
 
         checkExposure.setOnClickListener(new View.OnClickListener() {
-            @Override
+
             public void onClick(View v) {
 
-//                Calendar dayPeriod = Calendar.getInstance();
-//                dayPeriod.add(Calendar.DATE,-2);
-//                dayPeriod.getTime();
-//                dayPeriod.setTimeInMillis();
+                //Get days before ie. Incubation Period
+                LocalDateTime todayNairobi = LocalDateTime.now(ZoneId.of("Africa/Addis_Ababa"));
+                System.out.println("Current Date in EAT ="+todayNairobi);
+                LocalDateTime dateBefore = todayNairobi.minus(1, ChronoUnit.DAYS);
+                
+                System.out.println(dateBefore);
+
+
 
 
                 fStore.collection("cases")
-//                        .whereGreaterThan("Date Reported", dayPeriod)
+//                        .whereGreaterThanOrEqualTo("Date Reported", dateBefore)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -60,13 +86,35 @@ public class ExposureCheck extends AppCompatActivity {
                                 List<DocumentSnapshot >snapshotList = queryDocumentSnapshots.getDocuments();
                                 for (DocumentSnapshot snapshot: snapshotList){
                                     String userdata = snapshot.getString("User Packet Data");
-//                                    Timestamp dateReported = snapshot.getTimestamp(("Date Reported"));
-                                    DB.insertExposurePktdata(userdata);
+                                    exposurePacket = new ExposurePacket(userdata);
 
+
+                                    Log.d(casesnap, "got data");
+//                                    DB.insertExposurePktdata(userdata);
+                                    mpacketsViewModel.insertExp(exposurePacket);
+                                    Log.d(casesnap, "data inserted into exposure db");
+//                                    matchPackets();
 
                                 }
 
                             }
+
+//                            private void matchPackets() {
+//                                Cursor c = DB.matchPktdata();
+//                                if(c.getCount()==0){
+//
+//                                    // Not Exposed
+//                                    Log.d(casesnap,"not exposed");
+//
+//                                }else {
+//                                    Log.d(casesnap,"You exposed");
+//                                }
+//
+//
+//
+//                            }
+
+
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -85,6 +133,10 @@ public class ExposureCheck extends AppCompatActivity {
 
 
     }
+
+
+
+
 
     @Override
     protected void onStart() {

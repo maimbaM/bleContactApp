@@ -21,12 +21,12 @@ import androidx.fragment.app.Fragment;
 /**
  * Allows user to start & stop Bluetooth LE Advertising of their device.
  */
-public class AdvertiserFragment extends Fragment implements View.OnClickListener {
+public class AdvertiserFragment extends Fragment  {
 
     /**
      * Lets user toggle BLE Advertising.
      */
-    private Switch mSwitch;
+//    private Switch mSwitch;
 
     Button NexttoMaintwo;
 
@@ -66,7 +66,7 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
 
                 int errorCode = intent.getIntExtra(AdvertiserService.ADVERTISING_FAILED_EXTRA_CODE, -1);
 
-                mSwitch.setChecked(false);
+//                mSwitch.setChecked(false);
 
                 String errorMessage = getString(R.string.start_error_prefix);
                 switch (errorCode) {
@@ -103,8 +103,9 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
 
         View view = inflater.inflate(R.layout.fragment_advertiser, container, false);
 
-        mSwitch = (Switch) view.findViewById(R.id.advertise_switch);
-        mSwitch.setOnClickListener(this);
+//        mSwitch = (Switch) view.findViewById(R.id.advertise_switch);
+//        mSwitch.setOnClickListener(this);
+
 
         return view;
     }
@@ -118,9 +119,11 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
         super.onResume();
 
         if (AdvertiserService.running) {
-            mSwitch.setChecked(true);
+//            mSwitch.setChecked(true);
+            Toast.makeText(getActivity(), "Advertising Ongoing", Toast.LENGTH_LONG).show();
         } else {
-            mSwitch.setChecked(false);
+            startAdvertising();
+            Toast.makeText(getActivity(), "Advertising Started", Toast.LENGTH_LONG).show();
         }
 
         IntentFilter failureFilter = new IntentFilter(AdvertiserService.ADVERTISING_FAILED);
@@ -141,31 +144,33 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
     /**
      * Returns Intent addressed to the {@code AdvertiserService} class.
      */
-    private static Intent getServiceIntent(Context c) {
+    private static Intent getAdvServiceIntent(Context c) {
         return new Intent(c, AdvertiserService.class);
     }
 
     /**
      * Called when switch is toggled - starts or stops advertising.
      */
-    @Override
-    public void onClick(View v) {
-        // Is the toggle on?
-        boolean on = ((Switch) v).isChecked();
-
-        if (on) {
-            startAdvertising();
-        } else {
-            stopAdvertising();
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        // Is the toggle on?
+//        boolean on = ((Switch) v).isChecked();
+//
+//        if (on) {
+//            startAdvertising();
+//        } else {
+//            stopAdvertising();
+//        }
+//    }
 
     /**
      * Starts BLE Advertising by starting {@code AdvertiserService}.
      */
     private void startAdvertising() {
+//        Context c = getActivity();
+//        c.startService(getAdvServiceIntent(c));
         Context c = getActivity();
-        c.startService(getServiceIntent(c));
+        c.startService(getAdvServiceIntent(c));
     }
 
     /**
@@ -173,8 +178,8 @@ public class AdvertiserFragment extends Fragment implements View.OnClickListener
      */
     private void stopAdvertising() {
         Context c = getActivity();
-        c.stopService(getServiceIntent(c));
-        mSwitch.setChecked(false);
+        c.stopService(getAdvServiceIntent(c));
+//        mSwitch.setChecked(false);
     }
 
 }
