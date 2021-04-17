@@ -16,9 +16,14 @@ public class PacketsRepository {
     public PacketsRepository(Application application){
         ContractTracingDB database = ContractTracingDB.getInstance(application);
         scannedDao = database.scannedDao();
-        allScanPkts = scannedDao.getAllScanPkts();
+//        allScanPkts = scannedDao.getAllScanPkts();
 //        allExpPkts = scannedDao.getAllExpPkts();
     }
+
+    public PacketsRepository() {
+
+    }
+// Scanned Table Methods
 
     public void insert(ScannedPacket scannedPacket){
         new InsertScanAsyncTask(scannedDao).execute(scannedPacket);
@@ -52,6 +57,14 @@ public class PacketsRepository {
         new deleteAllExpAsyncTask(scannedDao).execute();
 
     }
+
+//    Query Methods
+
+    public void getMatchedPackets(){
+
+    }
+
+// Scanned Table Async Tasks
     private static class InsertScanAsyncTask extends AsyncTask<ScannedPacket, Void, Void>{
         private ScannedDao scannedDao;
 

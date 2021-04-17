@@ -69,15 +69,16 @@ public class ExposureCheck extends AppCompatActivity {
                 //Get days before ie. Incubation Period
                 LocalDateTime todayNairobi = LocalDateTime.now(ZoneId.of("Africa/Addis_Ababa"));
                 System.out.println("Current Date in EAT ="+todayNairobi);
-                LocalDateTime dateBefore = todayNairobi.minus(1, ChronoUnit.DAYS);
-                
+                LocalDateTime dateBefore = todayNairobi.minus(14, ChronoUnit.DAYS);
+                Date daygap =  new Date(2021-03-25);
+
                 System.out.println(dateBefore);
 
 
 
 
                 fStore.collection("cases")
-//                        .whereGreaterThanOrEqualTo("Date Reported", dateBefore)
+//                        .whereGreaterThan("DateReported", daygap)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override

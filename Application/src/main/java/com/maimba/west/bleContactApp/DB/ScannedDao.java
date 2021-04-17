@@ -20,8 +20,8 @@ public interface ScannedDao {
     @Query("DELETE FROM ScannedPackets_Table")
     void deleteOldPackets();
 
-    @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
-    LiveData<List<ScannedPacket>> getAllScanPkts();
+//    @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
+//    LiveData<List<ScannedPacket>> getAllScanPkts();
 
     //Exposure Table methods
 
@@ -29,9 +29,17 @@ public interface ScannedDao {
     void insertExposurePkt(ExposurePacket exposurePacket);
     @Delete
     void deleteExposurePkt(ExposurePacket exposurePacket);
+    //@Query("DELETE FROM ExposurePackets_Table WHERE ")
     @Query("DELETE FROM EXPOSUREPACKETS_TABLE")
     void deleteOldExpPkts();
 //    @Query("SELECT * FROM ExposurePackets_Table ORDER BY dateReported DESC")
 //    LiveData<List<ExposurePacket>> getAllExpPkts();
+
+
+//    Check Exposure Query
+//    @Query("SELECT DISTINCT ScannedPackets_Table.pktData " +
+//            "FROM ScannedPackets_Table " +
+//            "INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")
+//    LiveData<List<MatchedPackets>>   getMatchedPackets();
 
 }

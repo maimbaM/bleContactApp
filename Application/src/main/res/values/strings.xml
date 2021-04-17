@@ -9,12 +9,23 @@
 
     <string name="refresh">Refresh</string>
     <string name="next_page">Next Page</string>
+
     <string name="start_error_prefix">Start Advertising failed: </string>
     <string name="start_error_already_started">already started.</string>
     <string name="start_error_too_large">data packet exceeded 31 Byte limit.</string>
-    <string name="start_error_unsupported">not supported on this device.</string>
+    <string name="start_error_unsupported">Advertising not supported on this device.</string>
     <string name="start_error_internal">internal error.</string>
     <string name="start_error_too_many">too many advertisers.</string>
+
+    <string name="Scan_start_error_prefix">Start Scanning failed: </string>
+    <string name="Scan_start_error_already_started">Scanning already started.</string>
+    <string name="Scan_start_error_registration_failed">App cannot be registered.</string>
+    <string name="Scan_start_error_unsupported">Scan not supported on this device.</string>
+    <string name="Scan_start_error_internal">internal error.</string>
+
+
+
+
     <string name="bt_null">Error: Bluetooth object null</string>
     <string name="last_seen">Last Seen:</string>
     <string name="just_now">just now</string>

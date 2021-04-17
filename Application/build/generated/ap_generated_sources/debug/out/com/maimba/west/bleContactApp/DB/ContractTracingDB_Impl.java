@@ -30,10 +30,10 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
     final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `ScannedPackets_Table` (`id` INTEGER, `pktData` TEXT, `timeSeen` TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(`id`))");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `ScannedPackets_Table` (`id` INTEGER, `pktData` TEXT, PRIMARY KEY(`id`))");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `ExposurePackets_Table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b31eb789f0238b2512d14323f6c345f')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b2d782972baae64c92895fe509daed27')");
       }
 
       @Override
@@ -78,10 +78,9 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
 
       @Override
       protected RoomOpenHelper.ValidationResult onValidateSchema(SupportSQLiteDatabase _db) {
-        final HashMap<String, TableInfo.Column> _columnsScannedPacketsTable = new HashMap<String, TableInfo.Column>(3);
+        final HashMap<String, TableInfo.Column> _columnsScannedPacketsTable = new HashMap<String, TableInfo.Column>(2);
         _columnsScannedPacketsTable.put("id", new TableInfo.Column("id", "INTEGER", false, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsScannedPacketsTable.put("pktData", new TableInfo.Column("pktData", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsScannedPacketsTable.put("timeSeen", new TableInfo.Column("timeSeen", "TEXT", false, 0, "CURRENT_TIMESTAMP", TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysScannedPacketsTable = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesScannedPacketsTable = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoScannedPacketsTable = new TableInfo("ScannedPackets_Table", _columnsScannedPacketsTable, _foreignKeysScannedPacketsTable, _indicesScannedPacketsTable);
@@ -105,7 +104,7 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "5b31eb789f0238b2512d14323f6c345f", "04219d8bf732468ae73aaf3efe8dfa89");
+    }, "b2d782972baae64c92895fe509daed27", "82c1527dbc5af7483558ea0b2abae87a");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

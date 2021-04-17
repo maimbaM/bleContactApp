@@ -26,6 +26,8 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.maimba.west.bleContactApp.App.CHANNEL_1_ID;
+
 /**
  * Manages BLE Advertising independent of the main app.
  * If the app goes off screen (or gets killed completely) advertising can continue because this
@@ -34,8 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class AdvertiserService extends Service {
 
     private static final String TAG = AdvertiserService.class.getSimpleName();
-
     private static final int FOREGROUND_NOTIFICATION_ID = 1;
+
     public static final String EXTRA_MESSAGE = "com.maimba.west.bleContactApp.pdata";
     private int importance = NotificationManager.IMPORTANCE_LOW;
 
@@ -50,7 +52,7 @@ public class AdvertiserService extends Service {
     public static final String ADVERTISING_FAILED =
         "com.maimba.west.bleContactApp.advertising_failed";
 
-    public static final String ADVERTISING_FAILED_EXTRA_CODE = "failureCode";
+    public static final String ADVERTISING_FAILED_EXTRA_CODE = "AdvertisingFailureCode";
 
     public static final int ADVERTISING_TIMED_OUT = 6;
 
@@ -69,12 +71,32 @@ public class AdvertiserService extends Service {
 
     @Override
     public void onCreate() {
+
         running = true;
         initialize();
         startAdvertising();
 //        setTimeout();
 
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Notification notification = new NotificationCompat.Builder(this,CHANNEL_1_ID)
+                .setContentTitle("Example Service")
+                .setContentText("GAGAG")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        startForeground(1,notification);
+
+return START_STICKY;
     }
 
     @Override
@@ -86,7 +108,7 @@ public class AdvertiserService extends Service {
          */
         running = false;
         stopAdvertising();
-        mHandler.removeCallbacks(timeoutRunnable);
+//        mHandler.removeCallbacks(timeoutRunnable);
         stopForeground(true);
         super.onDestroy();
     }
@@ -99,42 +121,44 @@ public class AdvertiserService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-    public Notification getNotification() {
-        String channel;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            channel = createChannel();
-        else {
-            channel = "";
-        }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("snap map fake location");
-        Notification notification = mBuilder
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .build();
-
-
-        return notification;
-    }
-
-    //@NonNull
-    @TargetApi(29)
-    private synchronized String createChannel() {
-        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        String name = "snap map fake location ";
-        int importance = NotificationManager.IMPORTANCE_LOW;
-
-        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
-
-        mChannel.enableLights(true);
-        mChannel.setLightColor(Color.BLUE);
-        if (mNotificationManager != null) {
-            mNotificationManager.createNotificationChannel(mChannel);
-        } else {
-            stopSelf();
-        }
-        return "snap map channel";
-    }
+//
+//    public Notification getNotification() {
+//        String channel;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+//            channel = createChannel();
+//        else {
+//            channel = "";
+//        }
+//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel)
+//                .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+//                .setContentTitle("snap map fake location");
+//        Notification notification = mBuilder
+//                .setCategory(Notification.CATEGORY_SERVICE)
+//                .build();
+//
+//
+//        return notification;
+//    }
+//
+//    //@NonNull
+//    @TargetApi(29)
+//    private synchronized String createChannel() {
+//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        String name = "snap map fake location ";
+//        int importance = NotificationManager.IMPORTANCE_LOW;
+//
+//        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
+//
+//        mChannel.enableLights(true);
+//        mChannel.setLightColor(Color.BLUE);
+//        if (mNotificationManager != null) {
+//            mNotificationManager.createNotificationChannel(mChannel);
+//        } else {
+//            stopSelf();
+//        }
+//        return "snap map channel";
+//    }
 
     /**
      * Get references to system Bluetooth objects if we don't have them already.
@@ -177,7 +201,8 @@ public class AdvertiserService extends Service {
      * Starts BLE Advertising.
      */
     private void startAdvertising() {
-        goForeground();
+
+//        goForeground();
 
         Log.d(TAG, "Service: Starting Advertising");
 
@@ -193,24 +218,27 @@ public class AdvertiserService extends Service {
         }
     }
 
+
+
     /**
      * Move service to the foreground, to avoid execution limits on background processes.
      *
      *
      * Callers should call stopForeground(true) when background work is complete.
      */
-    private void goForeground() {
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-            notificationIntent, 0);
-        Notification n = new Notification.Builder(this)
-            .setContentTitle("Advertising device via Bluetooth")
-            .setContentText("This device is discoverable to others nearby.")
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentIntent(pendingIntent)
-            .build();
-        startForeground(FOREGROUND_NOTIFICATION_ID, n);
-    }
+//    private void goForeground() {
+//        Intent notificationIntent = new Intent(this, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+//            notificationIntent, 0);
+//        Notification n = new Notification.Builder(this)
+//            .setContentTitle("Advertising device via Bluetooth")
+//            .setContentText("This device is discoverable to others nearby.")
+//            .setSmallIcon(R.mipmap.ic_launcher)
+//            .setContentIntent(pendingIntent)
+//            .build();
+//        startForeground(FOREGROUND_NOTIFICATION_ID, n);
+//    }
+
 
     /**
      * Stops BLE Advertising.

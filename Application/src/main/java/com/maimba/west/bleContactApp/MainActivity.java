@@ -17,9 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 
 
 /**
@@ -32,6 +34,7 @@ public class MainActivity extends FragmentActivity {
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
     private FirebaseAuth fAuth;
     private Button nextBtn;
+    private PacketsViewModel packetsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class MainActivity extends FragmentActivity {
         fAuth = FirebaseAuth.getInstance();
         nextBtn = findViewById(R.id.nextButton);
         System.out.println(Constants.bleServiceData);
+        packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
+        packetsViewModel.deleteAllExpPackets();
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -64,35 +64,36 @@ public class AdvertiserFragment extends Fragment  {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                int errorCode = intent.getIntExtra(AdvertiserService.ADVERTISING_FAILED_EXTRA_CODE, -1);
+                int AdvErrorCode = intent.getIntExtra(AdvertiserService.ADVERTISING_FAILED_EXTRA_CODE, -1);
 
 //                mSwitch.setChecked(false);
 
-                String errorMessage = getString(R.string.start_error_prefix);
-                switch (errorCode) {
+
+                String AdvertisingErrorMessage = getString(R.string.start_error_prefix);
+                switch (AdvErrorCode) {
                     case AdvertiseCallback.ADVERTISE_FAILED_ALREADY_STARTED:
-                        errorMessage += " " + getString(R.string.start_error_already_started);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_already_started);
                         break;
                     case AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE:
-                        errorMessage += " " + getString(R.string.start_error_too_large);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_too_large);
                         break;
                     case AdvertiseCallback.ADVERTISE_FAILED_FEATURE_UNSUPPORTED:
-                        errorMessage += " " + getString(R.string.start_error_unsupported);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_unsupported);
                         break;
                     case AdvertiseCallback.ADVERTISE_FAILED_INTERNAL_ERROR:
-                        errorMessage += " " + getString(R.string.start_error_internal);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_internal);
                         break;
                     case AdvertiseCallback.ADVERTISE_FAILED_TOO_MANY_ADVERTISERS:
-                        errorMessage += " " + getString(R.string.start_error_too_many);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_too_many);
                         break;
                     case AdvertiserService.ADVERTISING_TIMED_OUT:
-                        errorMessage = " " + getString(R.string.advertising_timedout);
+                        AdvertisingErrorMessage = " " + getString(R.string.advertising_timedout);
                         break;
                     default:
-                        errorMessage += " " + getString(R.string.start_error_unknown);
+                        AdvertisingErrorMessage += " " + getString(R.string.start_error_unknown);
                 }
 
-                Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), AdvertisingErrorMessage, Toast.LENGTH_LONG).show();
             }
         };
     }
