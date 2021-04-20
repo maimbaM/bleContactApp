@@ -12,12 +12,14 @@ public class PacketsViewModel extends AndroidViewModel {
      private PacketsRepository repository;
      private LiveData<List<ScannedPacket>> allScanPackets;
      private LiveData<List<ExposurePacket>> allExpPackets;
+     private LiveData<List<MatchedPackets>> allMatchedPackets;
 
     public PacketsViewModel(@NonNull Application application) {
         super(application);
 
         repository = new PacketsRepository(application);
         allScanPackets = repository.getAllScanPkts();
+        allMatchedPackets = repository.getMatchedPackets();
     }
     public void insert(ScannedPacket scannedPacket){
         repository.insert(scannedPacket);
@@ -35,5 +37,6 @@ public class PacketsViewModel extends AndroidViewModel {
     public LiveData<List<ScannedPacket>> getAllScanPackets(){
         return allScanPackets;
     }
+    public LiveData<List<MatchedPackets>> getAllMatchedPackets(){return allMatchedPackets;}
 
 }

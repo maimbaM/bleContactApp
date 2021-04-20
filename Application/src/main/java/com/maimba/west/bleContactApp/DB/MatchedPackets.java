@@ -1,9 +1,12 @@
 package com.maimba.west.bleContactApp.DB;
 
+import androidx.room.ColumnInfo;
+
 public class MatchedPackets {
 
+    @ColumnInfo(name = "pktData")
     private String packet;
-    private String timeExposed;
+//    private String timeExposed;
 
     public String getPacket() {
 
@@ -14,11 +17,11 @@ public class MatchedPackets {
         this.packet = packet;
     }
 
-    public void setTimeExposed(String timeExposed) {
-        this.timeExposed = timeExposed;
-    }
+//    public void setTimeExposed(String timeExposed) {
+//        this.timeExposed = timeExposed;
+//    }
 
-    public String getTimeExposed() {
-        return timeExposed;
-    }
+//    public String getTimeExposed() {
+//        return timeExposed;
+//    }
 }

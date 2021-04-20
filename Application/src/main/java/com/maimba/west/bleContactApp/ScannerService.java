@@ -56,7 +56,8 @@ public class ScannerService extends Service {
     private ArrayList<ScanResult> mArrayList;
     private PacketsRepository mPacketsRepository;
     private PacketsViewModel mpacketsViewModel;
-    private DBHelper DB;
+    private Long timeseen;
+//    private DBHelper DB;
 
 
     //    private ScanResultAdapter mAdapter;
@@ -95,8 +96,8 @@ public class ScannerService extends Service {
 //                LayoutInflater.from(mcontext));
         mArrayList = new ArrayList<>();
         mHandler = new Handler();
-        DB = new DBHelper(mcontext);
-        mPacketsRepository = new PacketsRepository();
+//        DB = new DBHelper(mcontext);
+//        mPacketsRepository = new PacketsRepository();
         mpacketsViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(PacketsViewModel.class);
 
 
@@ -278,7 +279,8 @@ public class ScannerService extends Service {
         ScanRecord datainpacket = result.getScanRecord();
         byte[] pd = datainpacket.getServiceData(Constants.Service_UUID);
         String pktdata = new String(pd);
-        ScannedPacket scannedPacket = new ScannedPacket(pktdata);
+        timeseen = System.currentTimeMillis();
+        ScannedPacket scannedPacket = new ScannedPacket(pktdata,timeseen);
 
         int existingPosition = getPosition(result.getDevice().getAddress());
 

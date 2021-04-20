@@ -10,15 +10,16 @@ public class ScannedPacket {
 
     private @PrimaryKey Long id;
     private String pktData;
-//    @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
-//    private String timeSeen;
+    @ColumnInfo(defaultValue = "(datetime('now'))")
+    private Long timeSeen;
 
-//    public void setTimeSeen(String timeSeen) {
-//        this.timeSeen = timeSeen;
-//    }
+    public void setTimeSeen(Long timeSeen) {
+        this.timeSeen = timeSeen;
+    }
 
-    public ScannedPacket(String pktData) {
+    public ScannedPacket(String pktData, Long timeSeen) {
         this.pktData = pktData;
+        this.timeSeen = timeSeen;
     }
 
     public void setPktData(String pktData) {
@@ -37,7 +38,7 @@ public class ScannedPacket {
         return pktData;
     }
 
-//    public String getTimeSeen() {
-//        return timeSeen;
-//    }
+    public Long getTimeSeen() {
+        return timeSeen;
+    }
 }

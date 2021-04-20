@@ -1,13 +1,22 @@
 package com.maimba.west.bleContactApp.DB;
 
+import android.database.Cursor;
+import androidx.lifecycle.LiveData;
 import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
+import androidx.room.RoomSQLiteQuery;
 import androidx.room.SharedSQLiteStatement;
+import androidx.room.util.CursorUtil;
+import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
+import java.lang.Exception;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class ScannedDao_Impl implements ScannedDao {
@@ -179,5 +188,37 @@ public final class ScannedDao_Impl implements ScannedDao {
       __db.endTransaction();
       __preparedStmtOfDeleteOldExpPkts.release(_stmt);
     }
+  }
+
+  @Override
+  public LiveData<List<MatchedPackets>> getMatchedPackets() {
+    final String _sql = "SELECT DISTINCT ScannedPackets_Table.pktData FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    return __db.getInvalidationTracker().createLiveData(new String[]{"ScannedPackets_Table","ExposurePackets_Table"}, false, new Callable<List<MatchedPackets>>() {
+      @Override
+      public List<MatchedPackets> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfPacket = CursorUtil.getColumnIndexOrThrow(_cursor, "pktData");
+          final List<MatchedPackets> _result = new ArrayList<MatchedPackets>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final MatchedPackets _item;
+            _item = new MatchedPackets();
+            final String _tmpPacket;
+            _tmpPacket = _cursor.getString(_cursorIndexOfPacket);
+            _item.setPacket(_tmpPacket);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
   }
 }
