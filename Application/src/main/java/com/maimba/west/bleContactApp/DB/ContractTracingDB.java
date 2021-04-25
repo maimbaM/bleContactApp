@@ -17,6 +17,7 @@ public abstract class ContractTracingDB extends RoomDatabase {
 
     public abstract ScannedDao scannedDao();
 
+
     public static synchronized ContractTracingDB getInstance(Context context){
 
         if (instance == null){
@@ -24,6 +25,8 @@ public abstract class ContractTracingDB extends RoomDatabase {
                     ContractTracingDB.class,"ContactTracingDB")
                     .fallbackToDestructiveMigration()
                     .build();
+
+
         }
         return instance;
     }

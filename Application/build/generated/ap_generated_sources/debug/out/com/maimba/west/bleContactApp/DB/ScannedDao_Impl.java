@@ -32,6 +32,8 @@ public final class ScannedDao_Impl implements ScannedDao {
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteOldPackets;
 
+  private final SharedSQLiteStatement __preparedStmtOfInsertWithTime;
+
   private final SharedSQLiteStatement __preparedStmtOfDeleteOldExpPkts;
 
   public ScannedDao_Impl(RoomDatabase __db) {
@@ -39,7 +41,7 @@ public final class ScannedDao_Impl implements ScannedDao {
     this.__insertionAdapterOfScannedPacket = new EntityInsertionAdapter<ScannedPacket>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `ScannedPackets_Table` (`id`,`pktData`) VALUES (?,?)";
+        return "INSERT OR ABORT INTO `ScannedPackets_Table` (`id`,`pktData`,`timeSeen`) VALUES (?,?,?)";
       }
 
       @Override
@@ -53,6 +55,11 @@ public final class ScannedDao_Impl implements ScannedDao {
           stmt.bindNull(2);
         } else {
           stmt.bindString(2, value.getPktData());
+        }
+        if (value.getTimeSeen() == null) {
+          stmt.bindNull(3);
+        } else {
+          stmt.bindString(3, value.getTimeSeen());
         }
       }
     };
@@ -102,6 +109,13 @@ public final class ScannedDao_Impl implements ScannedDao {
       @Override
       public String createQuery() {
         final String _query = "DELETE FROM ScannedPackets_Table";
+        return _query;
+      }
+    };
+    this.__preparedStmtOfInsertWithTime = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "INSERT INTO ScannedPackets_Table (pktData) VALUES (?) ";
         return _query;
       }
     };
@@ -177,6 +191,26 @@ public final class ScannedDao_Impl implements ScannedDao {
   }
 
   @Override
+  public void insertWithTime(final String pktData) {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfInsertWithTime.acquire();
+    int _argIndex = 1;
+    if (pktData == null) {
+      _stmt.bindNull(_argIndex);
+    } else {
+      _stmt.bindString(_argIndex, pktData);
+    }
+    __db.beginTransaction();
+    try {
+      _stmt.executeInsert();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfInsertWithTime.release(_stmt);
+    }
+  }
+
+  @Override
   public void deleteOldExpPkts() {
     __db.assertNotSuspendingTransaction();
     final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteOldExpPkts.acquire();
@@ -192,7 +226,7 @@ public final class ScannedDao_Impl implements ScannedDao {
 
   @Override
   public LiveData<List<MatchedPackets>> getMatchedPackets() {
-    final String _sql = "SELECT DISTINCT ScannedPackets_Table.pktData FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
+    final String _sql = "SELECT DISTINCT ScannedPackets_Table.pktData , ScannedPackets_Table.timeSeen FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"ScannedPackets_Table","ExposurePackets_Table"}, false, new Callable<List<MatchedPackets>>() {
       @Override

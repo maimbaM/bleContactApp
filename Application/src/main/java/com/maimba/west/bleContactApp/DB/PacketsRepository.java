@@ -17,9 +17,13 @@ public class PacketsRepository {
     public PacketsRepository(Application application){
         ContractTracingDB database = ContractTracingDB.getInstance(application);
         scannedDao = database.scannedDao();
-//        allScanPkts = scannedDao.getAllScanPkts();
+        allScanPkts = scannedDao.getAllScanPkts();
 //        allExpPkts = scannedDao.getAllExpPkts();
         allMatchedPkts = scannedDao.getMatchedPackets();
+    }
+
+    public PacketsRepository() {
+
     }
 
 
@@ -39,6 +43,10 @@ public class PacketsRepository {
     }
     public LiveData<List<ScannedPacket>> getAllScanPkts(){
         return allScanPkts;
+    }
+
+    public void insertWithTime(String pktdata){
+        new InsertWithTimeAsyncTask(scannedDao).execute(pktdata);
     }
 
     // Exposure Table methods
@@ -65,22 +73,6 @@ public class PacketsRepository {
 
     }
 
-//    // Matched Packets Async Tasks
-//
-//    private static class MatchPacketsAsyncTask extends AsyncTask<Void, Void, Void>{
-//        private ScannedDao scannedDao;
-//
-//        private MatchPacketsAsyncTask(ScannedDao scannedDao){
-//            this.scannedDao = scannedDao;
-//        }
-//
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            scannedDao.getMatchedPackets();
-//            return null;
-//        }
-//    }
 // Scanned Table Async Tasks
     private static class InsertScanAsyncTask extends AsyncTask<ScannedPacket, Void, Void>{
         private ScannedDao scannedDao;
@@ -121,6 +113,19 @@ public class PacketsRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             scannedDao.deleteOldPackets();
+            return null;
+        }
+    }
+    private static class InsertWithTimeAsyncTask extends AsyncTask<String, Void, Void>{
+        private ScannedDao scannedDao;
+
+        private InsertWithTimeAsyncTask(ScannedDao scannedDao){
+            this.scannedDao = scannedDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            scannedDao.insertWithTime((params[0]));
             return null;
         }
     }

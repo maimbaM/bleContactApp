@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b2d782972baae64c92895fe509daed27",
+    "identityHash": "5b31eb789f0238b2512d14323f6c345f",
     "entities": [
       {
         "tableName": "ScannedPackets_Table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `pktData` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `pktData` TEXT, `timeSeen` TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -19,6 +19,13 @@
             "columnName": "pktData",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "timeSeen",
+            "columnName": "timeSeen",
+            "affinity": "TEXT",
+            "notNull": false,
+            "defaultValue": "CURRENT_TIMESTAMP"
           }
         ],
         "primaryKey": {
@@ -60,7 +67,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b2d782972baae64c92895fe509daed27')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b31eb789f0238b2512d14323f6c345f')"
     ]
   }
 }

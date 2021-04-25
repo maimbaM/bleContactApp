@@ -2,11 +2,13 @@ package com.maimba.west.bleContactApp.DB;
 
 import androidx.room.ColumnInfo;
 
+import java.sql.Timestamp;
+
 public class MatchedPackets {
 
     @ColumnInfo(name = "pktData")
     private String packet;
-//    private String timeExposed;
+    private Timestamp timeExposed;
 
     public String getPacket() {
 
@@ -17,11 +19,11 @@ public class MatchedPackets {
         this.packet = packet;
     }
 
-//    public void setTimeExposed(String timeExposed) {
-//        this.timeExposed = timeExposed;
-//    }
+    public void setTimeExposed(Timestamp timeExposed) {
+        this.timeExposed = timeExposed;
+    }
 
-//    public String getTimeExposed() {
-//        return timeExposed;
-//    }
+    public Timestamp getTimeExposed() {
+        return timeExposed;
+    }
 }

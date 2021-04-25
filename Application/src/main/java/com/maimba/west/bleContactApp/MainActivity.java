@@ -21,7 +21,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.maimba.west.bleContactApp.Advertiser.AdvertiserFragment;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.Scanner.ScannerFragment;
 
 
 /**

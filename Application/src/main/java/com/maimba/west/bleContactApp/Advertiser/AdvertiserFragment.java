@@ -1,6 +1,6 @@
 
 
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Advertiser;
 
 import android.bluetooth.le.AdvertiseCallback;
 import android.content.BroadcastReceiver;
@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
+import com.maimba.west.bleContactApp.R;
 
 
 /**

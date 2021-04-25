@@ -34,10 +34,10 @@
         <activity android:name=".Symptoms" />
 
         <service
-            android:name=".AdvertiserService"
+            android:name=".Advertiser.AdvertiserService"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".ScannerService" />
+        <service android:name=".Scanner.ScannerService" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Scanner;
 
 import android.app.Application;
 import android.app.Notification;
@@ -26,11 +26,14 @@ import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
-//import com.maimba.west.bleContactApp.ScannerFragment.SampleScanCallback;
+//import com.maimba.west.bleContactApp.Scanner.ScannerFragment.SampleScanCallback;
 
+import com.maimba.west.bleContactApp.Constants;
 import com.maimba.west.bleContactApp.DB.PacketsRepository;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.DB.ScannedPacket;
+import com.maimba.west.bleContactApp.MainActivity;
+import com.maimba.west.bleContactApp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +100,7 @@ public class ScannerService extends Service {
         mArrayList = new ArrayList<>();
         mHandler = new Handler();
 //        DB = new DBHelper(mcontext);
-//        mPacketsRepository = new PacketsRepository();
+        mPacketsRepository = new PacketsRepository();
         mpacketsViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(PacketsViewModel.class);
 
 
@@ -111,8 +114,8 @@ public class ScannerService extends Service {
                 notificationIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_1_ID)
-                .setContentTitle("Example Service")
-                .setContentText("GAGAG")
+                .setContentTitle("BLE Contact Tracing App")
+                .setContentText("This application will alert you in the case of exposure to infectious diseases")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();
@@ -234,7 +237,7 @@ public class ScannerService extends Service {
 
             for (ScanResult result : results){
                 mArrayList.add(result);
-//                addtoDB(result);
+
             }
 
         }
@@ -244,11 +247,10 @@ public class ScannerService extends Service {
             super.onScanResult(callbackType, result);
 
             mArrayList.add(result);
-            Log.d(TAG, "onScanResult: addded" + mArrayList.size());
-            for (int i = 0; i < mArrayList.size(); i++) {
+
                 addtoDB(result);
 
-            }
+
 
 
         }
@@ -279,8 +281,8 @@ public class ScannerService extends Service {
         ScanRecord datainpacket = result.getScanRecord();
         byte[] pd = datainpacket.getServiceData(Constants.Service_UUID);
         String pktdata = new String(pd);
-        timeseen = System.currentTimeMillis();
-        ScannedPacket scannedPacket = new ScannedPacket(pktdata,timeseen);
+//        timeseen = System.currentTimeMillis();
+        ScannedPacket scannedPacket = new ScannedPacket(pktdata);
 
         int existingPosition = getPosition(result.getDevice().getAddress());
 
@@ -294,7 +296,7 @@ public class ScannerService extends Service {
 
 //            mPacketsRepository.insert(scannedPacket);
 
-            mpacketsViewModel.insert(scannedPacket);
+            mpacketsViewModel.insertWithTime(pktdata);
             Log.d(TAG, "add: Added Scan pkts");
         } else {
             // Add new Device's ScanResult to list.

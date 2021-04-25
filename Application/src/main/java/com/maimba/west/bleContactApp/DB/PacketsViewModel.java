@@ -30,6 +30,7 @@ public class PacketsViewModel extends AndroidViewModel {
     public void deleteOldPackets(){
         repository.deleteOldPackets();
     }
+    public void insertWithTime(String pktData){repository.insertWithTime(pktData);}
 
     public void  insertExp(ExposurePacket exposurePacket){repository.insertExp(exposurePacket);}
     public void  deleteExp(ExposurePacket exposurePacket){repository.deleteExp(exposurePacket);}

@@ -11,20 +11,13 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tv_Location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:text="Nairobi"/>
+
 
         <TextView
             android:id="@+id/tv_pktData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="data"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:maxLines="1"
             android:layout_alignParentStart="true"
             android:ellipsize="end"/>

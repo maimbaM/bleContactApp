@@ -31,8 +31,7 @@ public class MatchedAdapter extends RecyclerView.Adapter <MatchedAdapter.Matched
 
         MatchedPackets currentMatchedPacket = matchedPackets.get(position);
         holder.textViewPktData.setText(currentMatchedPacket.getPacket());
-//        holder.textViewTimeseen.setText(currentMatchedPacket.getTimeExposed());
-//        holder.textViewLocation.setText(currentMatchedPacket.);
+        holder.textViewTimeseen.setText((CharSequence) currentMatchedPacket.getTimeExposed());
 
 
     }
@@ -50,12 +49,11 @@ public class MatchedAdapter extends RecyclerView.Adapter <MatchedAdapter.Matched
     class MatchedHolder extends RecyclerView.ViewHolder{
         private TextView textViewPktData;
         private TextView textViewTimeseen;
-        private TextView textViewLocation;
+
 
         public MatchedHolder(@NonNull View itemView) {
             super(itemView);
             textViewPktData = itemView.findViewById(R.id.tv_pktData);
-            textViewLocation = itemView.findViewById(R.id.tv_Location);
             textViewTimeseen = itemView.findViewById(R.id.tv_timeseen);
         }
     }

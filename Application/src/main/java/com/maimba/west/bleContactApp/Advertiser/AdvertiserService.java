@@ -1,8 +1,6 @@
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Advertiser;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -14,8 +12,6 @@ import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -23,6 +19,10 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+
+import com.maimba.west.bleContactApp.Constants;
+import com.maimba.west.bleContactApp.MainActivity;
+import com.maimba.west.bleContactApp.R;
 
 import java.util.concurrent.TimeUnit;
 
@@ -88,8 +88,8 @@ public class AdvertiserService extends Service {
                 notificationIntent, 0);
 
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_1_ID)
-                .setContentTitle("Example Service")
-                .setContentText("GAGAG")
+                .setContentTitle("BLE Contact Tracing App")
+                .setContentText("This application will alert you in the case of exposure to infectious diseases")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();

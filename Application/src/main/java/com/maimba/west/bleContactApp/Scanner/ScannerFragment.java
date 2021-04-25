@@ -1,35 +1,37 @@
 
 
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Scanner;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
-import java.util.ArrayList;
+import com.maimba.west.bleContactApp.DB.MatchedPackets;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.DB.ScannedPacket;
+import com.maimba.west.bleContactApp.MatchedAdapter;
+import com.maimba.west.bleContactApp.R;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -56,6 +58,8 @@ public class   ScannerFragment extends Fragment {
     private Handler mHandler;
 //    private Intent getScanServiceIntent;
     private BroadcastReceiver scannningFailureReceiver;
+    private RecyclerView recyclerView;
+    private PacketsViewModel packetsViewModel;
 
     /**
      * Must be called after object creation by MainActivity.
@@ -72,7 +76,9 @@ public class   ScannerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        setHasOptionsMenu(true);
         setRetainInstance(true);
-startScanning();
+        startScanning();
+
+
         scannningFailureReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -101,6 +107,33 @@ startScanning();
 
             }
         };
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+
+        View view = inflater.inflate(R.layout.fragment_scanner, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.rc_Scanner);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(false);
+
+        ScannedAdapter sAdapter = new ScannedAdapter();
+        recyclerView.setAdapter(sAdapter);
+
+//        checkExposure = findViewById(R.id.buttonCheckExposure);
+//        DB = new DBHelper(getApplicationContext());
+        packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
+     packetsViewModel.getAllScanPackets().observe(getViewLifecycleOwner(), new Observer<List<ScannedPacket>>() {
+         @Override
+         public void onChanged(List<ScannedPacket> scannedPackets) {
+             sAdapter.setScannedPackets(scannedPackets);
+         }
+     });
+        return view;
+
     }
 
     @Override
