@@ -75,7 +75,7 @@ public class AdvertiserService extends Service {
         running = true;
         initialize();
         startAdvertising();
-//        setTimeout();
+
 
         super.onCreate();
     }
@@ -121,44 +121,7 @@ return START_STICKY;
     public IBinder onBind(Intent intent) {
         return null;
     }
-//
-//    public Notification getNotification() {
-//        String channel;
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-//            channel = createChannel();
-//        else {
-//            channel = "";
-//        }
-//        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel)
-//                .setSmallIcon(android.R.drawable.ic_menu_mylocation)
-//                .setContentTitle("snap map fake location");
-//        Notification notification = mBuilder
-//                .setCategory(Notification.CATEGORY_SERVICE)
-//                .build();
-//
-//
-//        return notification;
-//    }
-//
-//    //@NonNull
-//    @TargetApi(29)
-//    private synchronized String createChannel() {
-//        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        String name = "snap map fake location ";
-//        int importance = NotificationManager.IMPORTANCE_LOW;
-//
-//        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
-//
-//        mChannel.enableLights(true);
-//        mChannel.setLightColor(Color.BLUE);
-//        if (mNotificationManager != null) {
-//            mNotificationManager.createNotificationChannel(mChannel);
-//        } else {
-//            stopSelf();
-//        }
-//        return "snap map channel";
-//    }
+
 
     /**
      * Get references to system Bluetooth objects if we don't have them already.
@@ -226,18 +189,7 @@ return START_STICKY;
      *
      * Callers should call stopForeground(true) when background work is complete.
      */
-//    private void goForeground() {
-//        Intent notificationIntent = new Intent(this, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-//            notificationIntent, 0);
-//        Notification n = new Notification.Builder(this)
-//            .setContentTitle("Advertising device via Bluetooth")
-//            .setContentText("This device is discoverable to others nearby.")
-//            .setSmallIcon(R.mipmap.ic_launcher)
-//            .setContentIntent(pendingIntent)
-//            .build();
-//        startForeground(FOREGROUND_NOTIFICATION_ID, n);
-//    }
+
 
 
     /**

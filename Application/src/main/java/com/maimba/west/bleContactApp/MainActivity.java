@@ -122,9 +122,11 @@ public class MainActivity extends FragmentActivity {
         switch (requestCode) {
             case PERMISSION_REQUEST_COARSE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, yay! Start the Bluetooth device scan.
+                    // Permission granted
                 } else {
                     // Alert the user that this application requires the location permission to perform the scan.
+                    Toast.makeText(this,"Application requires location Permision" ,Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
         }

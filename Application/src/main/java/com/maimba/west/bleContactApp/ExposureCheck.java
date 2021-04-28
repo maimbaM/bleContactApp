@@ -69,8 +69,6 @@ public class ExposureCheck extends AppCompatActivity {
         MatchedAdapter adapter = new MatchedAdapter();
         recyclerView.setAdapter(adapter);
 
-//        checkExposure = findViewById(R.id.buttonCheckExposure);
-//        DB = new DBHelper(getApplicationContext());
         mpacketsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         mpacketsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
             @Override
@@ -79,11 +77,11 @@ public class ExposureCheck extends AppCompatActivity {
             }
         });
 
-
-//        checkExposure.setOnClickListener(new View.OnClickListener() {
-
-//            public void onClick(View v) {
-
+        if (adapter != null){
+            Toast.makeText(this, "You are exposed", Toast.LENGTH_LONG).show(); }
+        else {
+            Toast.makeText(this, "You are safe", Toast.LENGTH_LONG).show();
+        }
 
             }
 

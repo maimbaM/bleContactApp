@@ -7,10 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
 @Database(entities = {ScannedPacket.class, ExposurePacket.class},version = 1)
+@TypeConverters(DateConverter.class)
 public abstract class ContractTracingDB extends RoomDatabase {
 
     private static ContractTracingDB instance;

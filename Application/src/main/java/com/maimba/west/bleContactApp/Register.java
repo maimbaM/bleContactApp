@@ -27,11 +27,11 @@ import java.util.Map;
 
 public class Register extends AppCompatActivity {
     public static final String TAG = "fstoreCreateUser";
-    EditText registerEmail,registerPassword;
-    Button registerbtn;
-    FirebaseAuth fAuth;
-    FirebaseFirestore fStore;
-    String userID;
+    private EditText registerEmail,registerPassword,registerName,registerPhone;
+    private Button registerbtn;
+    private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private String userID;
 
 
     @Override
@@ -41,6 +41,8 @@ public class Register extends AppCompatActivity {
 
         registerEmail = findViewById(R.id.registerEmail);
         registerPassword = findViewById(R.id.registerPassword);
+        registerName = findViewById(R.id.editTextName);
+        registerPhone = findViewById(R.id.editTextPhone);
         registerbtn = findViewById(R.id.btnRegister);
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -53,10 +55,21 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
+                String Name = registerName.getText().toString();
+                String phone = registerPhone.getText().toString();
                 final String email = registerEmail.getText().toString();
                 String password = registerPassword.getText().toString();
 
 
+                if (Name.isEmpty()){
+                    registerName.setError("Name is Required");
+                    return;
+                }
+                if (phone.isEmpty()){
+                    registerPhone.setError("Phone number is Required");
+                    return;
+                }
                 if (email.isEmpty()){
                     registerEmail.setError("Email is Required");
                     return;
@@ -66,6 +79,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+
                 fAuth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -73,11 +87,14 @@ public class Register extends AppCompatActivity {
                         userID = fAuth.getCurrentUser().getUid();
                         DocumentReference userCollection = fStore.collection("users").document(userID);
                         Map<String,Object> user = new HashMap<>();
+                        user.put("Name",Name);
+                        user.put("Phone Number",phone);
                         user.put("email",email);
                         userCollection.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "onSuccess: User Profile created for: " + userID);
+                                Toast.makeText(Register.this, "You have been registered Successfully", Toast.LENGTH_LONG).show();
                             }
                         });
 

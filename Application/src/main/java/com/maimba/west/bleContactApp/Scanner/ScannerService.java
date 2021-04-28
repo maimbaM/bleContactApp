@@ -1,5 +1,6 @@
 package com.maimba.west.bleContactApp.Scanner;
 
+import android.Manifest;
 import android.app.Application;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -15,19 +16,29 @@ import android.bluetooth.le.ScanSettings;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 
 //import com.maimba.west.bleContactApp.Scanner.ScannerFragment.SampleScanCallback;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.maimba.west.bleContactApp.Constants;
 import com.maimba.west.bleContactApp.DB.PacketsRepository;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
@@ -35,15 +46,17 @@ import com.maimba.west.bleContactApp.DB.ScannedPacket;
 import com.maimba.west.bleContactApp.MainActivity;
 import com.maimba.west.bleContactApp.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static com.maimba.west.bleContactApp.App.CHANNEL_1_ID;
 
 public class ScannerService extends Service {
     private static final long SCAN_PERIOD = 10000;
-    private static final String TAG = "scanService" ;
+    private static final String TAG = "scanService";
     public static boolean Scanner_running = false;
     private static final int FOREGROUND_NOTIFICATION_ID = 2;
     public static final String SCANNING_FAILED =
@@ -60,6 +73,7 @@ public class ScannerService extends Service {
     private PacketsRepository mPacketsRepository;
     private PacketsViewModel mpacketsViewModel;
     private Long timeseen;
+    private FusedLocationProviderClient fusedLocationProviderClient;
 //    private DBHelper DB;
 
 
@@ -78,6 +92,7 @@ public class ScannerService extends Service {
         this.mBluetoothAdapter = btAdapter;
         mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -85,12 +100,12 @@ public class ScannerService extends Service {
     }
 
 
-
     @Override
     public void onCreate() {
 
         Scanner_running = true;
         initialzeScanning();
+
         startScanning();
         super.onCreate();
         mcontext = this;
@@ -98,13 +113,51 @@ public class ScannerService extends Service {
 //        mAdapter = new ScanResultAdapter(mcontext,
 //                LayoutInflater.from(mcontext));
         mArrayList = new ArrayList<>();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mcontext);
+
         mHandler = new Handler();
 //        DB = new DBHelper(mcontext);
         mPacketsRepository = new PacketsRepository();
         mpacketsViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(PacketsViewModel.class);
 
 
+
     }
+//
+//    private void getlocation() {
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+//        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Location> task) {
+//                Location location = task.getResult();
+//                if (location !=null){
+//                    Geocoder geocoder =new Geocoder(mcontext,
+//                            Locale.getDefault() );
+//
+//                    try {
+//                        List<Address> addresses = geocoder.getFromLocation(
+//                                location.getLatitude(),location.getLongitude(),1
+//                        );
+//
+//                        Log.d(TAG, "onComplete: " + addresses.get(0).getAddressLine(0));
+//                        System.out.println("Current location ="+addresses.get(0).getAddressLine(0));
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//            }
+//        });
+//    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -300,7 +353,7 @@ public class ScannerService extends Service {
             Log.d(TAG, "add: Added Scan pkts");
         } else {
             // Add new Device's ScanResult to list.
-            mArrayList.add(result);
+//            mArrayList.add(result);
 
 //            DB.insertpktdata(pktdata);
 //

@@ -11,6 +11,7 @@ import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
 import java.lang.Exception;
+import java.lang.Long;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
@@ -222,6 +223,49 @@ public final class ScannedDao_Impl implements ScannedDao {
       __db.endTransaction();
       __preparedStmtOfDeleteOldExpPkts.release(_stmt);
     }
+  }
+
+  @Override
+  public LiveData<List<ScannedPacket>> getAllScanPkts() {
+    final String _sql = "SELECT `ScannedPackets_Table`.`id` AS `id`, `ScannedPackets_Table`.`pktData` AS `pktData`, `ScannedPackets_Table`.`timeSeen` AS `timeSeen` FROM scannedpackets_table ORDER BY timeSeen DESC";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    return __db.getInvalidationTracker().createLiveData(new String[]{"scannedpackets_table"}, false, new Callable<List<ScannedPacket>>() {
+      @Override
+      public List<ScannedPacket> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfPktData = CursorUtil.getColumnIndexOrThrow(_cursor, "pktData");
+          final int _cursorIndexOfTimeSeen = CursorUtil.getColumnIndexOrThrow(_cursor, "timeSeen");
+          final List<ScannedPacket> _result = new ArrayList<ScannedPacket>(_cursor.getCount());
+          while(_cursor.moveToNext()) {
+            final ScannedPacket _item;
+            final String _tmpPktData;
+            _tmpPktData = _cursor.getString(_cursorIndexOfPktData);
+            _item = new ScannedPacket(_tmpPktData);
+            final Long _tmpId;
+            if (_cursor.isNull(_cursorIndexOfId)) {
+              _tmpId = null;
+            } else {
+              _tmpId = _cursor.getLong(_cursorIndexOfId);
+            }
+            _item.setId(_tmpId);
+            final String _tmpTimeSeen;
+            _tmpTimeSeen = _cursor.getString(_cursorIndexOfTimeSeen);
+            _item.setTimeSeen(_tmpTimeSeen);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
   }
 
   @Override

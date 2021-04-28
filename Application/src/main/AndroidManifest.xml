@@ -17,6 +17,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".Scanner.locationService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <activity android:name=".Register" />
         <activity android:name=".ExposureCheck" />

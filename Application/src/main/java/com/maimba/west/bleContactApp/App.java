@@ -5,13 +5,21 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+
 public class App extends Application {
+    FusedLocationProviderClient fusedLocationProviderClient;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+
+
+
+
     }
 
     public static final String CHANNEL_1_ID = "Channel 1";
