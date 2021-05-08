@@ -32,6 +32,8 @@ public class ScannedAdapter extends RecyclerView.Adapter<ScannedAdapter.ScannedH
         ScannedPacket currentScannedPacket = scannedPackets.get(position);
         holder.tv_scanned.setText(currentScannedPacket.getPktData());
         holder.tv_scannedTime.setText(currentScannedPacket.getTimeSeen());
+        holder.tv_scannedLocation.setText(currentScannedPacket.getLocation());
+
 
     }
 
@@ -50,6 +52,7 @@ public class ScannedAdapter extends RecyclerView.Adapter<ScannedAdapter.ScannedH
 
         private TextView tv_scanned;
         private TextView tv_scannedTime;
+        private TextView tv_scannedLocation;
 
 
         public ScannedHolder(@NonNull View itemView) {
@@ -57,6 +60,7 @@ public class ScannedAdapter extends RecyclerView.Adapter<ScannedAdapter.ScannedH
 
             tv_scanned = itemView.findViewById(R.id.tv_pktData);
             tv_scannedTime = itemView.findViewById(R.id.tv_timeseen);
+            tv_scannedLocation = itemView.findViewById(R.id.tv_location);
         }
     }
 }

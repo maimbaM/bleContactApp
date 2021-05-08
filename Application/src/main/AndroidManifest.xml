@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -16,32 +17,33 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <service
-            android:name=".Scanner.locationService"
-            android:enabled="true"
-            android:exported="true"></service>
+        android:theme="@style/Theme.Apptheme">
 
-        <activity android:name=".Register" />
-        <activity android:name=".ExposureCheck" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScreenMain" />
-        <activity android:name=".StatusReport" />
-        <activity android:name=".Symptoms" />
+        <activity android:name=".Home.ScreenMain" />
+        <activity android:name=".Home.StatusReport" />
+        <activity android:name=".Home.Symptoms" />
+        <activity android:name=".Home.Statistics"/>
+        <activity android:name=".Home.ExposureCheck" />
+        <activity android:name=".login" />
+        <activity android:name=".Register" />
+
 
         <service
             android:name=".Advertiser.AdvertiserService"
             android:enabled="true"
             android:exported="false" />
-        <service android:name=".Scanner.ScannerService" />
+        <service
+            android:name=".Scanner.LocationService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

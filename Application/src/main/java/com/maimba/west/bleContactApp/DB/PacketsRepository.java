@@ -4,30 +4,51 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.work.WorkManager;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 public class PacketsRepository {
 
     private ScannedDao scannedDao;
+    private WorkManager workManager;
     private LiveData<List<ScannedPacket>> allScanPkts;
     private LiveData<List<ExposurePacket>> allExpPkts;
     private LiveData<List<MatchedPackets>> allMatchedPkts;
+    private LiveData<List<String>> allExpUID;
+    private String deviceLocation2;
 
     public PacketsRepository(Application application){
         ContractTracingDB database = ContractTracingDB.getInstance(application);
         scannedDao = database.scannedDao();
+//        addressLine = scannedDao.selectLastLocation();
+//        deviceLocation2 = scannedDao.selectLastLocation();
         allScanPkts = scannedDao.getAllScanPkts();
 //        allExpPkts = scannedDao.getAllExpPkts();
         allMatchedPkts = scannedDao.getMatchedPackets();
+        allExpUID = scannedDao.getExpUID();
+        workManager = WorkManager.getInstance(application);
     }
 
     public PacketsRepository() {
 
     }
 
+//    Query Methods
 
-// Scanned Table Methods
+    public LiveData<List<MatchedPackets>> getMatchedPackets(){
+        return allMatchedPkts;
+
+    }
+    public LiveData<List<ScannedPacket>> getAllScanPkts(){
+        return allScanPkts;
+    }
+
+    public LiveData<List<String>> getAllExpUID() {
+        return allExpUID;
+    }
+    // Scanned Table Methods
 
     public void insert(ScannedPacket scannedPacket){
         new InsertScanAsyncTask(scannedDao).execute(scannedPacket);
@@ -41,15 +62,13 @@ public class PacketsRepository {
         new DeleteAllScanAsyncTask(scannedDao).execute();
 
     }
-    public LiveData<List<ScannedPacket>> getAllScanPkts(){
-        return allScanPkts;
+
+
+    public void insertWithTime(String pktdata, String location){
+        new InsertWithTimeAsyncTask(scannedDao).execute(pktdata,location);
     }
 
-    public void insertWithTime(String pktdata){
-        new InsertWithTimeAsyncTask(scannedDao).execute(pktdata);
-    }
-
-    // Exposure Table methods
+    /** Exposure Table Methods */
 
     public void insertExp(ExposurePacket exposurePacket){
         new InsertExpAsyncTask(scannedDao).execute(exposurePacket);
@@ -61,17 +80,60 @@ public class PacketsRepository {
 
     }
 
-    public void deleteOldExp(){
+  public void deleteOldExp(){
         new deleteAllExpAsyncTask(scannedDao).execute();
 
     }
 
-//    Query Methods
+     //Location Table Methods
 
-    public LiveData<List<MatchedPackets>> getMatchedPackets(){
-        return allMatchedPkts;
+    public void insertLocation(Location location){
+        new InsertLocationAsyncTask(scannedDao).execute(location);
 
     }
+
+    // Service Data Table Methods
+
+    public void insertServiceData(ServiceData serviceData){
+        new InsertServiceDataAsyncTask(scannedDao).execute(serviceData);
+    }
+
+    // Service Data Table Async Tasks
+
+    private static class InsertServiceDataAsyncTask extends AsyncTask<ServiceData, Void, Void>{
+        private ScannedDao scannedDao;
+
+        private InsertServiceDataAsyncTask(ScannedDao scannedDao){
+            this.scannedDao = scannedDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(ServiceData... serviceData) {
+            scannedDao.insertServiceData((serviceData[0]));
+            return null;
+        }
+    }
+
+
+    // Location Table Aync Tasks
+
+    private static class InsertLocationAsyncTask extends AsyncTask<Location, Void, Void>{
+        private ScannedDao scannedDao;
+
+        private InsertLocationAsyncTask(ScannedDao scannedDao){
+            this.scannedDao = scannedDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(Location... locations) {
+            scannedDao.insertLocation((locations[0]));
+            return null;
+        }
+    }
+
+
 
 // Scanned Table Async Tasks
     private static class InsertScanAsyncTask extends AsyncTask<ScannedPacket, Void, Void>{
@@ -116,7 +178,7 @@ public class PacketsRepository {
             return null;
         }
     }
-    private static class InsertWithTimeAsyncTask extends AsyncTask<String, Void, Void>{
+    private static class InsertWithTimeAsyncTask extends AsyncTask<String,Void,Void>{
         private ScannedDao scannedDao;
 
         private InsertWithTimeAsyncTask(ScannedDao scannedDao){
@@ -125,9 +187,10 @@ public class PacketsRepository {
 
         @Override
         protected Void doInBackground(String... params) {
-            scannedDao.insertWithTime((params[0]));
+            scannedDao.insertWithTime((params[0]),(params[1]));
             return null;
         }
+
     }
 
     // Exposure Table Async Tasks

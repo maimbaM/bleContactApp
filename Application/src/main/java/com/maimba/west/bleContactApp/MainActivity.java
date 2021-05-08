@@ -3,6 +3,7 @@
 package com.maimba.west.bleContactApp;
 
 import android.Manifest;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -18,12 +19,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.maimba.west.bleContactApp.Advertiser.AdvertiserFragment;
+import com.maimba.west.bleContactApp.DB.PacketsRepository;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.Home.ScreenMain;
+import com.maimba.west.bleContactApp.Scanner.LocationService;
 import com.maimba.west.bleContactApp.Scanner.ScannerFragment;
+import com.maimba.west.bleContactApp.Scanner.ScannerWorker;
+//import com.maimba.west.bleContactApp.Scanner.ScannerWorker;
+
+import java.util.concurrent.TimeUnit;
+//import com.maimba.west.bleContactApp.Scanner.locationService;
 
 
 /**
@@ -32,11 +44,22 @@ import com.maimba.west.bleContactApp.Scanner.ScannerFragment;
 
 public class MainActivity extends FragmentActivity {
 
+    private static final String KEY_RESULT = "currentLocation";
     private BluetoothAdapter mBluetoothAdapter;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
     private FirebaseAuth fAuth;
     private Button nextBtn;
     private PacketsViewModel packetsViewModel;
+    private WorkManager workManager;
+    private WorkRequest ScanWorkRequest;
+    private WorkRequest locationWorkRequest;
+    private WorkRequest sequalWorkRequest;
+    private PacketsRepository mPacketsRepository;
+    private String lastLocation;
+    private String pktdata;
+    private Application application;
+    private static final String TAG = "MainActivity";
+    private String myResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +72,32 @@ public class MainActivity extends FragmentActivity {
          */
         fAuth = FirebaseAuth.getInstance();
         nextBtn = findViewById(R.id.nextButton);
-        System.out.println(Constants.bleServiceData);
+//        System.out.println(Constants.bleServiceData);
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
-        packetsViewModel.deleteAllExpPackets();
+//        packetsViewModel.deleteAllExpPackets();
+        workManager = workManager.getInstance(getApplicationContext());
+
+
+//        packetsViewModel.insertWithTime(pktdata, lastLocation);
+//        workRequest = new PeriodicWorkRequest().Builder(ScanWorker.class,15, TimeUnit.MINUTES).build();
+        ScanWorkRequest = new PeriodicWorkRequest.Builder(ScannerWorker.class,15,TimeUnit.MINUTES)
+//                .setInitialDelay(5,TimeUnit.MINUTES)
+                .build();
+//        locationWorkRequest = new PeriodicWorkRequest.Builder(LocationService.class,15,TimeUnit.MINUTES)
+//                .setInitialDelay(5,TimeUnit.MINUTES).build();
+//        sequalWorkRequest = new PeriodicWorkRequest.Builder(Sequal.class,15,TimeUnit.MINUTES)
+//                .setInitialDelay(5,TimeUnit.MINUTES)
+//
+//                .build();
+
+
+
+
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ScreenMain.class));
+                startActivity(new Intent(getApplicationContext(), ScreenMain.class));
             }
         });
 
@@ -114,6 +155,14 @@ public class MainActivity extends FragmentActivity {
             startActivity(new Intent(this,Register.class));
             finish();
         }
+        startLocationService();
+        workManager
+        .enqueue(ScanWorkRequest);
+//        workManager.getWorkInfoByIdLiveData(ScanWorkRequest.getId()).observe(this,workInfo -> {
+//            if (workInfo != null && workInfo.getState().isFinished()) {
+//                myResult = workInfo.getOutputData().getString(KEY_RESULT);}
+//            Log.d(TAG, "onCreate: "+ myResult);
+//        });
 
     }
 
@@ -184,5 +233,12 @@ public class MainActivity extends FragmentActivity {
 
         TextView view = (TextView) findViewById(R.id.error_textview);
         view.setText(getString(messageId));
+    }
+    private static Intent getLocServiceIntent(Context c) {
+        return new Intent(c, LocationService.class);
+    }
+    private void startLocationService(){
+        Context l =getApplicationContext();
+        l.startService(getLocServiceIntent(l));
     }
 }

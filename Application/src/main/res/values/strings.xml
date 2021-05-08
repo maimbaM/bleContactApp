@@ -24,8 +24,6 @@
     <string name="Scan_start_error_internal">internal error.</string>
 
 
-
-
     <string name="bt_null">Error: Bluetooth object null</string>
     <string name="last_seen">Last Seen:</string>
     <string name="just_now">just now</string>
@@ -43,8 +41,14 @@
     <string name="advertising_timedout">Advertising stopped due to timeout.</string>
     <string name="currentOutbreak">Symptoms Of Current Outbreak</string>
     <string name="statusReport">Report Positive Case</string>
-    <string name="noExposures">Check Exposure</string>
-    <string name="buttonReport">Report Positive Case</string>
-    <string name="report_positive_case">Report Positive Case</string>
+    <string name="noExposures">Exposures</string>
+    <string name="buttonReport">Change Current Status</string>
+    <string name="report_positive_case">Your Current Status is </string>
+    <string name="Symptoms">Symptoms</string>
+    <string name="StatusCheck">Status</string>
+    <string name="Reports">Statistics</string>
+    <string name="confirmationNumber">Confirmation Number</string>
+    <string name="getConNumber">From your test results
+        Enter the confirmation number provided</string>
 
 </resources>

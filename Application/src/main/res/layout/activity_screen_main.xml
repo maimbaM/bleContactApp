@@ -8,91 +8,224 @@
     tools:context=".MainActivity">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/homeTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="20dp"
+        app:cardCornerRadius="20dp"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/white"
+
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <ImageView
+                android:src="@drawable/ic_report"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Reports"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="#4a9eb5"
+                />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <GridLayout
+        android:layout_marginTop="250dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnOrderPreserved="false"
+        android:alignmentMode="alignMargins"
+        android:rowCount="2"
+        android:columnCount="2">
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/exposures"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardElevation="10dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        app:cardElevation="20dp"
         app:cardCornerRadius="20dp"
         android:layout_margin="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardMaxElevation="12dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
+
         >
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/noExposures"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#A60D0D"
-            />
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_exposure">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/noExposures"
+                android:textColor="#4a9eb5"
+                android:textSize="18sp" />
+        </LinearLayout>
 
 
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/symptoms"
-        android:layout_below="@+id/exposures"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="10dp"
-        app:cardCornerRadius="20dp"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardMaxElevation="12dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
-
-        <TextView
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Symptoms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/currentOutbreak"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#A60D0D"
-            />
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="20dp"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
 
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <ImageView
+                    android:src="@drawable/ic_facts"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center">
+
+                </ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Symptoms"
+
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/montserrat"
+                    android:textColor="#4a9eb5"
+                    />
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                app:cardElevation="20dp"
+                app:cardCornerRadius="20dp"
+                android:layout_margin="10dp"
+                app:cardBackgroundColor="@color/white"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_status">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/montserrat"
+                        android:text="@string/StatusCheck"
+                        android:textColor="#4a9eb5"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
 
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/statusReport"
-        android:layout_below="@+id/symptoms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="10dp"
-        app:cardCornerRadius="20dp"
-        android:layout_margin="10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardMaxElevation="12dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
-
-        <TextView
+        <androidx.cardview.widget.CardView
+        android:id="@+id/Statistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/statusReport"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#A60D0D"
-            />
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            app:cardElevation="20dp"
+            app:cardCornerRadius="20dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/white"
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+            <ImageView
+                android:src="@drawable/ic_report"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center">
+
+            </ImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Reports"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserrat"
+                android:textColor="#4a9eb5"
+                />
+        </LinearLayout>
 
 
-
-    </androidx.cardview.widget.CardView>
-
-
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
 </RelativeLayout>
+
+
+

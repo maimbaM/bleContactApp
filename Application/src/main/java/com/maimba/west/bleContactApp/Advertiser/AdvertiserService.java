@@ -21,6 +21,8 @@ import androidx.core.app.NotificationCompat;
 
 
 import com.maimba.west.bleContactApp.Constants;
+import com.maimba.west.bleContactApp.DB.ContractTracingDB;
+import com.maimba.west.bleContactApp.DB.ScannedDao;
 import com.maimba.west.bleContactApp.MainActivity;
 import com.maimba.west.bleContactApp.R;
 
@@ -63,6 +65,7 @@ public class AdvertiserService extends Service {
     private Handler mHandler;
 
     private Runnable timeoutRunnable;
+    private ScannedDao scannedDao;
 
     /**
      * Length of time to allow advertising before automatically shutting off. (10 minutes)
@@ -71,6 +74,8 @@ public class AdvertiserService extends Service {
 
     @Override
     public void onCreate() {
+        ContractTracingDB database = ContractTracingDB.getInstance(getApplicationContext());
+        scannedDao = database.scannedDao();
 
         running = true;
         initialize();
@@ -222,7 +227,8 @@ return START_STICKY;
         dataBuilder.setIncludeDeviceName(false);
 
         /*  */
-        String userPacketData = Constants.bleServiceData;
+
+        String userPacketData = scannedDao.selectServiceData();
         dataBuilder.addServiceData(Constants.Service_UUID, userPacketData.getBytes());
 
 

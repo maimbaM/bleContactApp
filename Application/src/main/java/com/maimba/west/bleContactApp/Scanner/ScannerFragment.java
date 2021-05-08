@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 
-import com.maimba.west.bleContactApp.Advertiser.AdvertiserService;
-import com.maimba.west.bleContactApp.DB.MatchedPackets;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.DB.ScannedPacket;
-import com.maimba.west.bleContactApp.MatchedAdapter;
 import com.maimba.west.bleContactApp.R;
 
 import java.util.List;
@@ -61,6 +61,8 @@ public class   ScannerFragment extends Fragment {
     private BroadcastReceiver scannningFailureReceiver;
     private RecyclerView recyclerView;
     private PacketsViewModel packetsViewModel;
+    private WorkManager workManager;
+    private WorkRequest workRequest;
 
     /**
      * Must be called after object creation by MainActivity.
@@ -77,15 +79,17 @@ public class   ScannerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        setHasOptionsMenu(true);
         setRetainInstance(true);
-        startLocationService();
-        startScanning();
+//        startLocationService();
+        Log.d(TAG, "onCreate: loc running");
+
+//        startScanning();
 
 
         scannningFailureReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                int scanErrorCode = intent.getIntExtra(ScannerService.SCANNING_FAILED_EXTRA_CODE, -2);
+                int scanErrorCode = intent.getIntExtra(ScannerWorker.SCANNING_FAILED_EXTRA_CODE, -2);
 
                 String ScannerErrorMessage = getString(R.string.Scan_start_error_prefix);
                 switch (scanErrorCode) {
@@ -142,7 +146,7 @@ public class   ScannerFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        IntentFilter scanFailureFilter = new IntentFilter(ScannerService.SCANNING_FAILED);
+        IntentFilter scanFailureFilter = new IntentFilter(ScannerWorker.SCANNING_FAILED);
         getActivity().registerReceiver(scannningFailureReceiver,scanFailureFilter);
     }
 
@@ -153,25 +157,20 @@ public class   ScannerFragment extends Fragment {
     }
 
 //     * Start scanning for BLE Advertisements (& set it up to stop after a set period of time).*/
-    private static Intent getScanServiceIntent(Context s) {
-    return new Intent(s, ScannerService.class);
-}
-    private static Intent getLocServiceIntent(Context c) {
-        return new Intent(c, locationService.class);
-    }
-    private void startScanning() {
-        Context s = getActivity();
-        s.startService(getScanServiceIntent(s));
+//    private static Intent getScanServiceIntent(Context s) {
+//    return new Intent(s, ScannerWorker.class);
+//}
 
-    }
-    private void stopScanning(){
-        Context s =  getActivity();
-        s.stopService(getScanServiceIntent(s));
-    }
-private void startLocationService(){
-        Context l =getActivity();
-        l.startService(getLocServiceIntent(l));
-}
+//    private void startScanning() {
+//        Context s = getActivity();
+//        s.startService(getScanServiceIntent(s));
+//
+//    }
+//    private void stopScanning(){
+//        Context s =  getActivity();
+//        s.stopService(getScanServiceIntent(s));
+//    }
+
 
     }
 

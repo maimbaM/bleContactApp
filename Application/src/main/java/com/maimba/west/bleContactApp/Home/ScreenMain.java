@@ -1,4 +1,4 @@
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.maimba.west.bleContactApp.R;
+
 //import com.google.firebase.auth.FirebaseAuth;
 
 public class ScreenMain extends AppCompatActivity {
     TextView verifyMsg;
     Button verifyEmailbtn;
     //FirebaseAuth auth;
-    CardView exposure,symptoms,status;
+    CardView exposure,symptoms,status,statistics;
 
 
     @Override
@@ -24,8 +26,9 @@ public class ScreenMain extends AppCompatActivity {
         setContentView(R.layout.activity_screen_main);
 
         exposure = findViewById(R.id.exposures);
-        symptoms = findViewById(R.id.symptoms);
-        status = findViewById(R.id.statusReport);
+        symptoms = findViewById(R.id.Symptoms);
+        status = findViewById(R.id.Status);
+        statistics = findViewById(R.id.Statistics);
 
 
         exposure.setOnClickListener(new View.OnClickListener() {
@@ -44,6 +47,12 @@ public class ScreenMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(),StatusReport.class));
+            }
+        });
+        statistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),Statistics.class));
             }
         });
 

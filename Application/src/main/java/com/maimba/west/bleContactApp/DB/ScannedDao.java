@@ -20,14 +20,14 @@ public interface ScannedDao {
     @Query("DELETE FROM ScannedPackets_Table")
     void deleteOldPackets();
 
-    @Query("INSERT INTO ScannedPackets_Table (pktData) VALUES (:pktData) ")
-    void insertWithTime(String pktData);
+    @Query("INSERT INTO ScannedPackets_Table (pktData,location) VALUES (:pktData,:location) ")
+    void insertWithTime(String pktData, String location);
 
     @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
     LiveData<List<ScannedPacket>> getAllScanPkts();
 
-    //Exposure Table methods
 
+    //Exposure Table methods
     @Insert
     void insertExposurePkt(ExposurePacket exposurePacket);
     @Delete
@@ -39,10 +39,35 @@ public interface ScannedDao {
 //    LiveData<List<ExposurePacket>> getAllExpPkts();
 
 
-////    Check Exposure Query
-     @Query("SELECT DISTINCT ScannedPackets_Table.pktData , ScannedPackets_Table.timeSeen " +
+
+    //Location Table Methods
+    @Insert
+    void insertLocation(Location location);
+
+    @Query("SELECT Location_Table.addressLine FROM Location_Table WHERE id=(SELECT max(id) FROM Location_Table)")
+    String selectLastLocation();
+
+
+
+//Service Data Table
+    @Insert
+    void insertServiceData(ServiceData serviceData);
+
+    @Query("SELECT ServiceData_Table.serviceData FROM ServiceData_Table WHERE id=(SELECT max(id) FROM ServiceData_Table)")
+    String selectServiceData();
+
+
+
+
+    ////    Check Exposure Query
+     @Query("SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , " +
+             "ExposurePackets_Table.caseDisease , ExposurePackets_Table.userName , ExposurePackets_Table.userPhone " +
             "FROM ScannedPackets_Table " +
             "INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")
    LiveData<List<MatchedPackets>>   getMatchedPackets();
+    @Query("SELECT DISTINCT ExposurePackets_Table.userID " +
+            "FROM ExposurePackets_Table " +
+            "INNER JOIN ScannedPackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")
+    LiveData<List<String>>   getExpUID();
 
 }

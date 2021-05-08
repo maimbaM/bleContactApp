@@ -11,8 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {ScannedPacket.class, ExposurePacket.class},version = 1)
-@TypeConverters(DateConverter.class)
+@Database(entities = {ScannedPacket.class, ExposurePacket.class , Location.class, ServiceData.class},version = 1)
 public abstract class ContractTracingDB extends RoomDatabase {
 
     private static ContractTracingDB instance;
@@ -39,19 +38,5 @@ public abstract class ContractTracingDB extends RoomDatabase {
         }
     };
 
-    private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void>{
-        private ScannedDao scannedDao;
-        private PopulateDbAsyncTask(ContractTracingDB db){
-            scannedDao = db.scannedDao();
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            scannedDao.insert(new ScannedPacket("mimiwrreyy"));
-            scannedDao.insert(new ScannedPacket("bilimbili"));
-            scannedDao.insertExposurePkt(new ExposurePacket("tatuuqwer"));
-            return null;
-        }
-    }
 
 }

@@ -12,16 +12,34 @@ public class ScannedPacket {
     private String pktData;
     @ColumnInfo(defaultValue = "CURRENT_TIMESTAMP")
     private String timeSeen;
-
-    public void setTimeSeen(String  timeSeen) {
-        this.timeSeen = timeSeen;
-    }
+    private String location;
 
     public ScannedPacket(String pktData) {
         this.pktData = pktData;
 
+
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+
+    public String getTimeSeen() {
+        return timeSeen;
+    }
+    public void setTimeSeen(String  timeSeen) {
+        this.timeSeen = timeSeen;
+    }
+
+
+    public String getPktData() {
+        return pktData;
+    }
     public void setPktData(String pktData) {
         this.pktData = pktData;
     }
@@ -34,11 +52,7 @@ public class ScannedPacket {
         return id;
     }
 
-    public String getPktData() {
-        return pktData;
-    }
 
-    public String getTimeSeen() {
-        return timeSeen;
-    }
+
+
 }

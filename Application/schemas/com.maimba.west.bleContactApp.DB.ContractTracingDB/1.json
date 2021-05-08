@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5b31eb789f0238b2512d14323f6c345f",
+    "identityHash": "84c0a9add74121a3e6cd459e9c4915b1",
     "entities": [
       {
         "tableName": "ScannedPackets_Table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `pktData` TEXT, `timeSeen` TEXT DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `pktData` TEXT, `timeSeen` TEXT DEFAULT CURRENT_TIMESTAMP, `location` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -26,6 +26,12 @@
             "affinity": "TEXT",
             "notNull": false,
             "defaultValue": "CURRENT_TIMESTAMP"
+          },
+          {
+            "fieldPath": "location",
+            "columnName": "location",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -39,7 +45,7 @@
       },
       {
         "tableName": "ExposurePackets_Table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `userName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -50,6 +56,94 @@
           {
             "fieldPath": "userData",
             "columnName": "userData",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userID",
+            "columnName": "userID",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userPhone",
+            "columnName": "userPhone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "caseDisease",
+            "columnName": "caseDisease",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "caseDateReported",
+            "columnName": "caseDateReported",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Location_Table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `locationCoordinates` TEXT, `addressLine` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "locationCoordinates",
+            "columnName": "locationCoordinates",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "addressLine",
+            "columnName": "addressLine",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ServiceData_Table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `serviceData` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serviceData",
+            "columnName": "serviceData",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -67,7 +161,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5b31eb789f0238b2512d14323f6c345f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84c0a9add74121a3e6cd459e9c4915b1')"
     ]
   }
 }

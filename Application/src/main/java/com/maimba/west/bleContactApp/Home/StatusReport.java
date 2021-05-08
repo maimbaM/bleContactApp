@@ -1,9 +1,10 @@
-package com.maimba.west.bleContactApp;
+package com.maimba.west.bleContactApp.Home;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.maimba.west.bleContactApp.Constants;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,9 +34,11 @@ public class StatusReport extends AppCompatActivity {
     Button reportButton;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-    String userid , diseaseName,userpktdata,userName,userPhone;
+    String userid , diseaseName,userpktdata,FName,LName,userPhone,currentStatus;
     DocumentReference diseaseref;
     DocumentReference userRef;
+    private TextView Status;
+
 
 
 
@@ -44,15 +50,36 @@ public class StatusReport extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         FirebaseUser mfirebaseuser = fAuth.getCurrentUser();
         userid = mfirebaseuser.getUid();
-        userpktdata= Constants.bleServiceData;
+        Status = findViewById(R.id.tvCurrentStatus);
+
 
         reportButton = findViewById(R.id.buttonReport);
 
-        diseaseref =  fStore.collection("Diseases").document("Coronavirus");
+        diseaseref =  fStore.collection("Diseases").document("Tuberculosis");
         userRef = fStore.collection("users").document(userid);
 
-        /**
-         * Get disease name
+
+        //Get User Current Status
+
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot userDocument = task.getResult();
+                    if(userDocument.exists()){
+                        currentStatus = userDocument.getString("Status");
+                        }
+                    Log.d(TAG, "onComplete: Got Status");
+                }else{
+                    Log.d(TAG,"Failed getting user Status");
+                }
+            }
+        });
+
+        Status.setText(currentStatus);
+
+        /*
+          Get disease name
          */
 
         diseaseref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -62,20 +89,25 @@ public class StatusReport extends AppCompatActivity {
                     DocumentSnapshot documentSnapshot = task.getResult();
                     if (documentSnapshot.exists()){
                     diseaseName = documentSnapshot.getString("Name");}
+                    Log.d(TAG, "onComplete: Got disease Name");
                 }else{
                     Log.d(TAG,"Failed getting disease name");
                 }
             }
         });
-
+        //Get User Name & Phone
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot userDocument = task.getResult();
                     if(userDocument.exists()){
-                        userName = userDocument.getString("Name");
+                        FName = userDocument.getString("First Name");
+                        LName = userDocument.getString("Last Name");
+                        userpktdata = userDocument.getString("Service Data");
+
                         userPhone = userDocument.getString("Phone Number");}
+                    Log.d(TAG, "onComplete: Got user details");
                     }else{
                     Log.d(TAG,"Failed getting user details");
                 }
@@ -102,7 +134,8 @@ public class StatusReport extends AppCompatActivity {
                     DocumentReference casesCollection = fStore.collection("cases").document();
                     Map<String,Object> positive_case = new HashMap<>();
                     positive_case.put("USER ID",userid);
-                    positive_case.put("User Name", userName);
+                    positive_case.put("First Name", FName);
+                    positive_case.put("Last Name", LName);
                     positive_case.put("User Phone", userPhone);
                     positive_case.put("Disease",diseaseName);
                     positive_case.put("User Packet Data",userpktdata);
@@ -110,7 +143,7 @@ public class StatusReport extends AppCompatActivity {
                     casesCollection.set(positive_case).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "onSuccess: Case reported for: " + userpktdata);
+                            Log.d(TAG, "onSuccess: Case reported for: " + userid);
                             Toast.makeText(StatusReport.this, "Case successfully reported", Toast.LENGTH_LONG).show();
                         }
                     });
