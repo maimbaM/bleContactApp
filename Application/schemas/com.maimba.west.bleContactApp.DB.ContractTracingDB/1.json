@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "84c0a9add74121a3e6cd459e9c4915b1",
+    "identityHash": "2f2e14feead56f6e22cd30aa2b9f8221",
     "entities": [
       {
         "tableName": "ScannedPackets_Table",
@@ -45,7 +45,7 @@
       },
       {
         "tableName": "ExposurePackets_Table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `userName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `FirstName` TEXT, `LastName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -66,8 +66,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "userName",
-            "columnName": "userName",
+            "fieldPath": "FirstName",
+            "columnName": "FirstName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LastName",
+            "columnName": "LastName",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -161,7 +167,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84c0a9add74121a3e6cd459e9c4915b1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2f2e14feead56f6e22cd30aa2b9f8221')"
     ]
   }
 }

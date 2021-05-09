@@ -76,7 +76,7 @@ public final class ScannedDao_Impl implements ScannedDao {
     this.__insertionAdapterOfExposurePacket = new EntityInsertionAdapter<ExposurePacket>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR ABORT INTO `ExposurePackets_Table` (`id`,`userData`,`userID`,`userName`,`userPhone`,`caseDisease`,`caseDateReported`) VALUES (nullif(?, 0),?,?,?,?,?,?)";
+        return "INSERT OR ABORT INTO `ExposurePackets_Table` (`id`,`userData`,`userID`,`FirstName`,`LastName`,`userPhone`,`caseDisease`,`caseDateReported`) VALUES (nullif(?, 0),?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -92,25 +92,30 @@ public final class ScannedDao_Impl implements ScannedDao {
         } else {
           stmt.bindString(3, value.getUserID());
         }
-        if (value.getUserName() == null) {
+        if (value.getFirstName() == null) {
           stmt.bindNull(4);
         } else {
-          stmt.bindString(4, value.getUserName());
+          stmt.bindString(4, value.getFirstName());
         }
-        if (value.getUserPhone() == null) {
+        if (value.getLastName() == null) {
           stmt.bindNull(5);
         } else {
-          stmt.bindString(5, value.getUserPhone());
+          stmt.bindString(5, value.getLastName());
         }
-        if (value.getCaseDisease() == null) {
+        if (value.getUserPhone() == null) {
           stmt.bindNull(6);
         } else {
-          stmt.bindString(6, value.getCaseDisease());
+          stmt.bindString(6, value.getUserPhone());
         }
-        if (value.getCaseDateReported() == null) {
+        if (value.getCaseDisease() == null) {
           stmt.bindNull(7);
         } else {
-          stmt.bindString(7, value.getCaseDateReported());
+          stmt.bindString(7, value.getCaseDisease());
+        }
+        if (value.getCaseDateReported() == null) {
+          stmt.bindNull(8);
+        } else {
+          stmt.bindString(8, value.getCaseDateReported());
         }
       }
     };
@@ -423,7 +428,7 @@ public final class ScannedDao_Impl implements ScannedDao {
 
   @Override
   public LiveData<List<MatchedPackets>> getMatchedPackets() {
-    final String _sql = "SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , ExposurePackets_Table.caseDisease , ExposurePackets_Table.userName , ExposurePackets_Table.userPhone FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
+    final String _sql = "SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"ScannedPackets_Table","ExposurePackets_Table"}, false, new Callable<List<MatchedPackets>>() {
       @Override
@@ -433,7 +438,7 @@ public final class ScannedDao_Impl implements ScannedDao {
           final int _cursorIndexOfTimeExposed = CursorUtil.getColumnIndexOrThrow(_cursor, "timeSeen");
           final int _cursorIndexOfLocation = CursorUtil.getColumnIndexOrThrow(_cursor, "location");
           final int _cursorIndexOfDisease = CursorUtil.getColumnIndexOrThrow(_cursor, "caseDisease");
-          final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "userName");
+          final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "FirstName");
           final int _cursorIndexOfPhone = CursorUtil.getColumnIndexOrThrow(_cursor, "userPhone");
           final List<MatchedPackets> _result = new ArrayList<MatchedPackets>(_cursor.getCount());
           while(_cursor.moveToNext()) {

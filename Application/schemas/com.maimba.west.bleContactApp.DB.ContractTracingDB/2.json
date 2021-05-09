@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "e53914d0c218f88bd10fce36c17a39ea",
+    "identityHash": "2f2e14feead56f6e22cd30aa2b9f8221",
     "entities": [
       {
         "tableName": "ScannedPackets_Table",
@@ -45,7 +45,7 @@
       },
       {
         "tableName": "ExposurePackets_Table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `FirstName` TEXT, `LastName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -60,8 +60,20 @@
             "notNull": false
           },
           {
-            "fieldPath": "userName",
-            "columnName": "userName",
+            "fieldPath": "userID",
+            "columnName": "userID",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "FirstName",
+            "columnName": "FirstName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "LastName",
+            "columnName": "LastName",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -92,12 +104,70 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Location_Table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `locationCoordinates` TEXT, `addressLine` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "locationCoordinates",
+            "columnName": "locationCoordinates",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "addressLine",
+            "columnName": "addressLine",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "ServiceData_Table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `serviceData` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "serviceData",
+            "columnName": "serviceData",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e53914d0c218f88bd10fce36c17a39ea')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2f2e14feead56f6e22cd30aa2b9f8221')"
     ]
   }
 }

@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.maimba.west.bleContactApp.DB.ContractTracingDB;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.DB.ScannedDao;
 import com.maimba.west.bleContactApp.DB.ServiceData;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -39,12 +41,18 @@ public class login extends AppCompatActivity {
     private PacketsViewModel packetsViewModel;
     private String packetData;
     private DocumentReference userRef;
+    private ScannedDao scannedDao;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ContractTracingDB database = ContractTracingDB.getInstance(getApplicationContext());
+        scannedDao = database.scannedDao();
+        packetData = scannedDao.selectServiceData();
+        ServiceData serviceData = new ServiceData(packetData);
+        packetsViewModel.insertServiceData(serviceData);
 
 
 
@@ -78,22 +86,7 @@ public class login extends AppCompatActivity {
                                 FirebaseUser mfirebaseuser = fAuth.getCurrentUser();
                                 userID= mfirebaseuser.getUid();
                                 userRef = fStore.collection("users").document(userID);
-                                userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if(task.isSuccessful()){
-                                            DocumentSnapshot userDocument = task.getResult();
-                                            if(userDocument.exists()){
-                                                packetData = userDocument.getString("Service Data");
-                                            }
-                                            Log.d(TAG, "onComplete: Got Service Data");
-                                        }else{
-                                            Log.d(TAG,"Failed getting sevice Data");
-                                        }
-                                    }
-                                });
-                                ServiceData serviceData = new ServiceData(packetData);
-                                packetsViewModel.insertServiceData(serviceData);
+
 
                               startActivity(new Intent(login.this,MainActivity.class));
                               finish();

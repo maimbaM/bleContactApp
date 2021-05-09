@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
-@Database(entities = {ScannedPacket.class, ExposurePacket.class , Location.class, ServiceData.class},version = 1)
+@Database(entities = {ScannedPacket.class, ExposurePacket.class , Location.class, ServiceData.class},version = 2)
 public abstract class ContractTracingDB extends RoomDatabase {
 
     private static ContractTracingDB instance;

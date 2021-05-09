@@ -11,10 +11,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -90,8 +93,17 @@ public class MainActivity extends FragmentActivity {
 //
 //                .build();
 
+class LocationThread extends Thread{
+    @Override
+    public void run() {
+        startLocationService();
+    }
+}
+LocationThread locationThread = new LocationThread();
+locationThread.start();
 
-
+        Log.d(TAG, "onCreate: location Thread " + locationThread.getId());
+        Log.d(TAG, "onCreate: Main thread ID "+ Thread.currentThread().getId());
 
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
@@ -155,7 +167,6 @@ public class MainActivity extends FragmentActivity {
             startActivity(new Intent(this,Register.class));
             finish();
         }
-        startLocationService();
         workManager
         .enqueue(ScanWorkRequest);
 //        workManager.getWorkInfoByIdLiveData(ScanWorkRequest.getId()).observe(this,workInfo -> {

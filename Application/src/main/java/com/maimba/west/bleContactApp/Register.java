@@ -54,7 +54,7 @@ public class Register extends AppCompatActivity {
 
         // Set packet Service Data
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
-        packetData = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());
+        packetData =Constants.SERVICE_DATA;
         ServiceData serviceData = new ServiceData(packetData);
         packetsViewModel.insertServiceData(serviceData);
 

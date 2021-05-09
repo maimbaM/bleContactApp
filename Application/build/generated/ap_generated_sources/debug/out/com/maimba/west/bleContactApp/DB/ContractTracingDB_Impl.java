@@ -27,15 +27,15 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `ScannedPackets_Table` (`id` INTEGER, `pktData` TEXT, `timeSeen` TEXT DEFAULT CURRENT_TIMESTAMP, `location` TEXT, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `ExposurePackets_Table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `userName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `ExposurePackets_Table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userData` TEXT, `userID` TEXT, `FirstName` TEXT, `LastName` TEXT, `userPhone` TEXT, `caseDisease` TEXT, `caseDateReported` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `Location_Table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `locationCoordinates` TEXT, `addressLine` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS `ServiceData_Table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `serviceData` TEXT)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '84c0a9add74121a3e6cd459e9c4915b1')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2f2e14feead56f6e22cd30aa2b9f8221')");
       }
 
       @Override
@@ -96,11 +96,12 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
                   + " Expected:\n" + _infoScannedPacketsTable + "\n"
                   + " Found:\n" + _existingScannedPacketsTable);
         }
-        final HashMap<String, TableInfo.Column> _columnsExposurePacketsTable = new HashMap<String, TableInfo.Column>(7);
+        final HashMap<String, TableInfo.Column> _columnsExposurePacketsTable = new HashMap<String, TableInfo.Column>(8);
         _columnsExposurePacketsTable.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsExposurePacketsTable.put("userData", new TableInfo.Column("userData", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsExposurePacketsTable.put("userID", new TableInfo.Column("userID", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
-        _columnsExposurePacketsTable.put("userName", new TableInfo.Column("userName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsExposurePacketsTable.put("FirstName", new TableInfo.Column("FirstName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsExposurePacketsTable.put("LastName", new TableInfo.Column("LastName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsExposurePacketsTable.put("userPhone", new TableInfo.Column("userPhone", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsExposurePacketsTable.put("caseDisease", new TableInfo.Column("caseDisease", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsExposurePacketsTable.put("caseDateReported", new TableInfo.Column("caseDateReported", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -140,7 +141,7 @@ public final class ContractTracingDB_Impl extends ContractTracingDB {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "84c0a9add74121a3e6cd459e9c4915b1", "6367ca9466f8557904d1175891a3e02a");
+    }, "2f2e14feead56f6e22cd30aa2b9f8221", "df464dfc2078a03f7a3ab0515f6ecf40");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

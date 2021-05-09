@@ -55,6 +55,7 @@ public class AdvertiserFragment extends Fragment  {
         });
 
        */
+
         advertisingFailureReceiver = new BroadcastReceiver() {
 
             /**
@@ -107,7 +108,7 @@ public class AdvertiserFragment extends Fragment  {
 //        mSwitch = (Switch) view.findViewById(R.id.advertise_switch);
 //        mSwitch.setOnClickListener(this);
 
-
+        startAdvertising();
         return view;
     }
 
@@ -115,22 +116,22 @@ public class AdvertiserFragment extends Fragment  {
      * When app comes on screen, check if BLE Advertisements are running, set switch accordingly,
      * and register the Receiver to be notified if Advertising fails.
      */
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (AdvertiserService.running) {
-//            mSwitch.setChecked(true);
-            Toast.makeText(getActivity(), "Advertising Ongoing", Toast.LENGTH_LONG).show();
-        } else {
-            startAdvertising();
-            Toast.makeText(getActivity(), "Advertising Started", Toast.LENGTH_LONG).show();
-        }
-
-        IntentFilter failureFilter = new IntentFilter(AdvertiserService.ADVERTISING_FAILED);
-        getActivity().registerReceiver(advertisingFailureReceiver, failureFilter);
-
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//        if (AdvertiserService.running) {
+////            mSwitch.setChecked(true);
+//            Toast.makeText(getActivity(), "Advertising Ongoing", Toast.LENGTH_LONG).show();
+//        } else {
+//            startAdvertising();
+//            Toast.makeText(getActivity(), "Advertising Started", Toast.LENGTH_LONG).show();
+//        }
+//
+//        IntentFilter failureFilter = new IntentFilter(AdvertiserService.ADVERTISING_FAILED);
+//        getActivity().registerReceiver(advertisingFailureReceiver, failureFilter);
+//
+//    }
 
     /**
      * When app goes off screen, unregister the Advertising failure Receiver to stop memory leaks.
@@ -139,7 +140,7 @@ public class AdvertiserFragment extends Fragment  {
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(advertisingFailureReceiver);
+//        getActivity().unregisterReceiver(advertisingFailureReceiver);
     }
 
     /**

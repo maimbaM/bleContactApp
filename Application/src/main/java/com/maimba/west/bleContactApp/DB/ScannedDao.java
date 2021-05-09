@@ -61,10 +61,11 @@ public interface ScannedDao {
 
     ////    Check Exposure Query
      @Query("SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , " +
-             "ExposurePackets_Table.caseDisease , ExposurePackets_Table.userName , ExposurePackets_Table.userPhone " +
+             "ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone " +
             "FROM ScannedPackets_Table " +
             "INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")
    LiveData<List<MatchedPackets>>   getMatchedPackets();
+
     @Query("SELECT DISTINCT ExposurePackets_Table.userID " +
             "FROM ExposurePackets_Table " +
             "INNER JOIN ScannedPackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")

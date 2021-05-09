@@ -14,15 +14,17 @@ public class ExposurePacket {
 
     private String userData;
     private String userID;
-    private String userName;
+    private String FirstName;
+    private String LastName;
     private String userPhone;
     private String caseDisease;
     private String caseDateReported;
 
-    public ExposurePacket(String userData, String userID, String userName, String userPhone, String caseDisease, String caseDateReported) {
+    public ExposurePacket(String userData, String userID, String FirstName,String LastName,String userPhone, String caseDisease, String caseDateReported) {
         this.userData = userData;
         this.userID = userID;
-        this.userName = userName;
+        this.FirstName = FirstName;
+        this.LastName = LastName;
         this.userPhone = userPhone;
         this.caseDisease = caseDisease;
         this.caseDateReported = caseDateReported;
@@ -52,12 +54,20 @@ public class ExposurePacket {
         this.userData = userData;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getFirstName() {
+        return FirstName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 
     public String getUserPhone() {

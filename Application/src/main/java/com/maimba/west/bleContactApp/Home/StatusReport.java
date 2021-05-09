@@ -31,13 +31,15 @@ public class StatusReport extends AppCompatActivity {
     private static final String TAG = "Status Report";
 
 
-    Button reportButton;
+    Button reportButton,negateButton;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-    String userid , diseaseName,userpktdata,FName,LName,userPhone,currentStatus;
+    String userid , diseaseName,userpktdata,FName,LName,userPhone;
     DocumentReference diseaseref;
-    DocumentReference userRef;
-    private TextView Status;
+     DocumentReference userRef;
+     TextView Status;
+     String newStatus;
+    String currentStatus;
 
 
 
@@ -51,9 +53,14 @@ public class StatusReport extends AppCompatActivity {
         FirebaseUser mfirebaseuser = fAuth.getCurrentUser();
         userid = mfirebaseuser.getUid();
         Status = findViewById(R.id.tvCurrentStatus);
+        Log.d(TAG, "onCreate: " + userid);
+
 
 
         reportButton = findViewById(R.id.buttonReport);
+        negateButton = findViewById(R.id.NtoP);
+        negateButton.setVisibility(View.INVISIBLE);
+//        reportButton.setVisibility(View.INVISIBLE);
 
         diseaseref =  fStore.collection("Diseases").document("Tuberculosis");
         userRef = fStore.collection("users").document(userid);
@@ -68,15 +75,27 @@ public class StatusReport extends AppCompatActivity {
                     DocumentSnapshot userDocument = task.getResult();
                     if(userDocument.exists()){
                         currentStatus = userDocument.getString("Status");
+                        Status.setText(currentStatus);
+                        if(currentStatus.equals("Negative")){
+                            newStatus = "Positive";
+                            negateButton.setVisibility(View.INVISIBLE);
+                        }else if (currentStatus.equals("Positive")){
+                            newStatus = "Negative";
+                            reportButton.setVisibility(View.INVISIBLE);
+                            negateButton.setVisibility(View.VISIBLE);
+                        }
                         }
                     Log.d(TAG, "onComplete: Got Status");
+                    Log.d(TAG, "onComplete: "+ newStatus);
+                    Log.d(TAG, "onComplete: "+  currentStatus);
                 }else{
                     Log.d(TAG,"Failed getting user Status");
                 }
             }
         });
 
-        Status.setText(currentStatus);
+
+
 
         /*
           Get disease name
@@ -127,11 +146,12 @@ public class StatusReport extends AppCompatActivity {
 
             //user logged in
 
-
+        Log.d(TAG, "onStart: "+ currentStatus);
             reportButton.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    DocumentReference casesCollection = fStore.collection("cases").document();
+                    DocumentReference casesCollection = fStore.collection("cases").document(userid);
                     Map<String,Object> positive_case = new HashMap<>();
                     positive_case.put("USER ID",userid);
                     positive_case.put("First Name", FName);
@@ -140,6 +160,9 @@ public class StatusReport extends AppCompatActivity {
                     positive_case.put("Disease",diseaseName);
                     positive_case.put("User Packet Data",userpktdata);
                     positive_case.put("Date Reported", FieldValue.serverTimestamp());
+
+
+                    userRef.update("Status",newStatus);
                     casesCollection.set(positive_case).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -150,6 +173,15 @@ public class StatusReport extends AppCompatActivity {
 
 
 
+                }
+            });
+
+            negateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    userRef.update("Status",newStatus);
+
+                    Toast.makeText(StatusReport.this, "Status Successfully Changed", Toast.LENGTH_LONG).show();
                 }
             });
 

@@ -26,6 +26,9 @@ import com.maimba.west.bleContactApp.DB.ScannedDao;
 import com.maimba.west.bleContactApp.MainActivity;
 import com.maimba.west.bleContactApp.R;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
 import static com.maimba.west.bleContactApp.App.CHANNEL_1_ID;
@@ -66,6 +69,7 @@ public class AdvertiserService extends Service {
 
     private Runnable timeoutRunnable;
     private ScannedDao scannedDao;
+    private String LL;
 
     /**
      * Length of time to allow advertising before automatically shutting off. (10 minutes)
@@ -76,6 +80,20 @@ public class AdvertiserService extends Service {
     public void onCreate() {
         ContractTracingDB database = ContractTracingDB.getInstance(getApplicationContext());
         scannedDao = database.scannedDao();
+
+        class newThread extends Thread{
+            @Override
+            public void run() {
+//                LL =  scannedDao.selectLastLocation();
+                Constants.SERVICE_DATA = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
+                Log.d(TAG, "ad Thread New" );
+            }
+        }
+        Log.d(TAG, "onCreate: "+ LL);
+
+        newThread PP = new newThread();
+        PP.start();
+
 
         running = true;
         initialize();
@@ -228,7 +246,8 @@ return START_STICKY;
 
         /*  */
 
-        String userPacketData = scannedDao.selectServiceData();
+        String userPacketData = Constants.SERVICE_DATA;
+        Log.d(TAG, "buildAdvertiseData: " + userPacketData);
         dataBuilder.addServiceData(Constants.Service_UUID, userPacketData.getBytes());
 
 

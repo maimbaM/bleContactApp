@@ -42,7 +42,7 @@
     <string name="currentOutbreak">Symptoms Of Current Outbreak</string>
     <string name="statusReport">Report Positive Case</string>
     <string name="noExposures">Exposures</string>
-    <string name="buttonReport">Change Current Status</string>
+    <string name="buttonReport">Now Sick Change Status</string>
     <string name="report_positive_case">Your Current Status is </string>
     <string name="Symptoms">Symptoms</string>
     <string name="StatusCheck">Status</string>
@@ -50,5 +50,12 @@
     <string name="confirmationNumber">Confirmation Number</string>
     <string name="getConNumber">From your test results
         Enter the confirmation number provided</string>
+    <string name="Intro">If Smartphones with this app are in close Proximity,they will be registered on your device.
+        \n In times of Infectious disease outbreaks check if you have been exposed on the Exposures tab below</string>
+    <string name="NumberofExposee">No of People
+        You have been Exposed to</string>
+    <string name="NtoP">Now well Change Status</string>
+    <string name="NumberofCases">Number of Cases You have experienced</string>
+    <string name="NumberofVictims">No. Of People You have Exposed</string>
 
 </resources>

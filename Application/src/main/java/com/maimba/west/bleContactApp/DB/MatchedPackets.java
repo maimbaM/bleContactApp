@@ -16,7 +16,7 @@ public class MatchedPackets {
     private String location;
     @ColumnInfo(name = "caseDisease")
     private String disease;
-    @ColumnInfo(name = "userName")
+    @ColumnInfo(name = "FirstName")
     private String name;
     @ColumnInfo(name = "userPhone")
     private String phone;

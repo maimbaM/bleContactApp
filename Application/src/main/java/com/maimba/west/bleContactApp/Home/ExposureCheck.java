@@ -87,21 +87,23 @@ public class ExposureCheck extends AppCompatActivity {
     }
 
     private class Downloaded {
-        private String userName;
+        private String FirstName;
+        private String LastName;
         private String userID;
         private String userPacketData;
         private String userPhone;
         private String caseDisease;
         private String caseDateReported;
 
-        public Downloaded(String userName,String userID, String userPacketData, String userPhone, String caseDisease, String caseDateReported) {
-            this.userName = userName;
-            this.userID = userID;
-            this.userPacketData = userPacketData;
-            this.userPhone = userPhone;
-            this.caseDisease = caseDisease;
-            this.caseDateReported = caseDateReported;
-        }
+//        public Downloaded(String FirstName,String LastName,String userID, String userPacketData, String userPhone, String caseDisease, String caseDateReported) {
+//            this.FirstName = FirstName;
+//            this.LastName = LastName;
+//            this.userID = userID;
+//            this.userPacketData = userPacketData;
+//            this.userPhone = userPhone;
+//            this.caseDisease = caseDisease;
+//            this.caseDateReported = caseDateReported;
+//        }
 
         public Downloaded() {
         }
@@ -155,7 +157,8 @@ public class ExposureCheck extends AppCompatActivity {
 
                     for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
                         Log.d(TAG, "onComplete: " + documentSnapshot.getString("User Packet Data"));
-                        caseDownload.userName = documentSnapshot.getString("User Name");
+                        caseDownload.FirstName = documentSnapshot.getString("First Name");
+                        caseDownload.LastName = documentSnapshot.getString("Last Name");
                         caseDownload.userID = documentSnapshot.getString("USER ID");
                         caseDownload.userPacketData = documentSnapshot.getString("User Packet Data");
                         caseDownload.caseDisease = documentSnapshot.getString("Disease");
@@ -163,7 +166,7 @@ public class ExposureCheck extends AppCompatActivity {
                         caseDownload.caseDateReported = documentSnapshot.getDate("Date Reported").toString();
                         DownloadedPkts.add(caseDownload);
 
-                        ExposurePacket exposurePacket = new ExposurePacket(caseDownload.userPacketData,caseDownload.userID,caseDownload.userName,caseDownload.userPhone,caseDownload.caseDisease,caseDownload.caseDateReported);
+                        ExposurePacket exposurePacket = new ExposurePacket(caseDownload.userPacketData,caseDownload.userID,caseDownload.FirstName,caseDownload.LastName,caseDownload.userPhone,caseDownload.caseDisease,caseDownload.caseDateReported);
                         mpacketsViewModel.insertExp(exposurePacket);
 
                     }
