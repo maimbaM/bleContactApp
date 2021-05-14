@@ -50,9 +50,9 @@ public class login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ContractTracingDB database = ContractTracingDB.getInstance(getApplicationContext());
         scannedDao = database.scannedDao();
-        packetData = scannedDao.selectServiceData();
-        ServiceData serviceData = new ServiceData(packetData);
-        packetsViewModel.insertServiceData(serviceData);
+//        packetData = scannedDao.selectServiceData();
+//        ServiceData serviceData = new ServiceData(packetData);
+//        packetsViewModel.insertServiceData(serviceData);
 
 
 

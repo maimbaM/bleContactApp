@@ -144,7 +144,7 @@ public class StatusReport extends AppCompatActivity {
         super.onStart();
 
 
-            //user logged in
+            //report status
 
         Log.d(TAG, "onStart: "+ currentStatus);
             reportButton.setOnClickListener(new View.OnClickListener() {

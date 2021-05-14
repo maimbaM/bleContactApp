@@ -40,7 +40,7 @@ public class ScreenMain extends AppCompatActivity {
         symptoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),Symptoms.class));
+                startActivity(new Intent(getApplicationContext(), DiseaseSymptoms.class));
             }
         });
         status.setOnClickListener(new View.OnClickListener() {

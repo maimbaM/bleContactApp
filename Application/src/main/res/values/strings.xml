@@ -50,8 +50,7 @@
     <string name="confirmationNumber">Confirmation Number</string>
     <string name="getConNumber">From your test results
         Enter the confirmation number provided</string>
-    <string name="Intro">If Smartphones with this app are in close Proximity,they will be registered on your device.
-        \n In times of Infectious disease outbreaks check if you have been exposed on the Exposures tab below</string>
+    <string name="Intro">If Smartphones with this app are in close Proximity,this Interaction will be recorded on your device. </string>
     <string name="NumberofExposee">No of People
         You have been Exposed to</string>
     <string name="NtoP">Now well Change Status</string>

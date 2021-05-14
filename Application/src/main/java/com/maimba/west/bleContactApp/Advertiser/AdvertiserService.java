@@ -86,10 +86,10 @@ public class AdvertiserService extends Service {
             public void run() {
 //                LL =  scannedDao.selectLastLocation();
                 Constants.SERVICE_DATA = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
-                Log.d(TAG, "ad Thread New" );
+
             }
         }
-        Log.d(TAG, "onCreate: "+ LL);
+
 
         newThread PP = new newThread();
         PP.start();
