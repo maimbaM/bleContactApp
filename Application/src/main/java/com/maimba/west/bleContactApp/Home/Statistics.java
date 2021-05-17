@@ -107,13 +107,14 @@ public class Statistics extends AppCompatActivity {
                     Map<String,Object> Exposure = new HashMap<>();
                     Exposure.put("ExposerID",expID);
                     Exposure.put("expTimeSeen",timeSeen);
-                    Exposure.put("Location",location)
+                    Exposure.put("Location",location);
 
                     userDetails.put("FistName",FName);
                     userDetails.put("LastName",LName);
                     userDetails.put("Email",userEmail);
                     userDetails.put("Phone",userPhone);
                     userDetails.put("TimeSeen",timeSeen);
+                    userDetails.put("Location",location);
 
 
                     exposerRef.document(expID).collection("VictimsID").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

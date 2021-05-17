@@ -18,9 +18,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Apptheme">
-
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".Home.Victims"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,11 +29,10 @@
         <activity android:name=".Home.ScreenMain" />
         <activity android:name=".Home.StatusReport" />
         <activity android:name=".Home.DiseaseSymptoms" />
-        <activity android:name=".Home.Statistics"/>
+        <activity android:name=".Home.Statistics" />
         <activity android:name=".Home.ExposureCheck" />
         <activity android:name=".login" />
         <activity android:name=".Register" />
-
 
         <service
             android:name=".Advertiser.AdvertiserService"
