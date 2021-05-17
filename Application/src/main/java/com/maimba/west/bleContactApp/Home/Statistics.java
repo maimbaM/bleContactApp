@@ -45,7 +45,7 @@ public class Statistics extends AppCompatActivity {
     private String expID;
     private String exposerID;
     private Query caseQuery,exposerQuery;
-    private String FName,LName,userEmail,userPhone,timeSeen;
+    private String FName,LName,userEmail,userPhone,timeSeen,location;
     private Map<String,Object> userDetails;
 
 
@@ -84,10 +84,7 @@ public class Statistics extends AppCompatActivity {
                         userPhone = userDocument.getString("PhoneNumber");
 
 
-                        userDetails.put("FistName",FName);
-                        userDetails.put("LastName",LName);
-                        userDetails.put("Email",userEmail);
-                        userDetails.put("Phone",userPhone);
+
                     }
                     Log.d(TAG, "onComplete: Got user details");
                 }else{
@@ -99,25 +96,27 @@ public class Statistics extends AppCompatActivity {
         packetsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
             @Override
             public void onChanged(List<MatchedPackets> matchedPackets) {
-                MatchedPackets currentMatched = new MatchedPackets();
-                timeSeen = currentMatched.getTimeExposed();
-                expID = currentMatched.getUserID();
-            }
-        });
+                exposureCounter.setText(String.valueOf(matchedPackets.size()));
+                Log.d(TAG, "onChanged: Exposers" + matchedPackets.size());
 
-        //Exposers
-        packetsViewModel.getAllExpUID().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                exposureCounter.setText(String.valueOf(strings.size()));
-                Log.d(TAG, "onChanged: Exposers" + strings.size());
-                for (String value: strings) {
+                for (MatchedPackets value: matchedPackets) {
                     Log.d(TAG, "onChanged: "+ value);
+                    timeSeen = value.getTimeExposed();
+                    expID = value.getUserID();
+                    location = value.getLocation();
                     Map<String,Object> Exposure = new HashMap<>();
-                    Exposure.put("Exposer",value);
-                    exposerID = value;
+                    Exposure.put("ExposerID",expID);
+                    Exposure.put("expTimeSeen",timeSeen);
+                    Exposure.put("Location",location)
 
-                    exposerRef.document(exposerID).collection("VictimsID").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    userDetails.put("FistName",FName);
+                    userDetails.put("LastName",LName);
+                    userDetails.put("Email",userEmail);
+                    userDetails.put("Phone",userPhone);
+                    userDetails.put("TimeSeen",timeSeen);
+
+
+                    exposerRef.document(expID).collection("VictimsID").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d(TAG, "onSuccess: Exposee IDs Added");
@@ -132,10 +131,40 @@ public class Statistics extends AppCompatActivity {
                     });
 
                 }
-
-
             }
         });
+
+//        //Exposers
+//        packetsViewModel.getAllExpUID().observe(this, new Observer<List<String>>() {
+//            @Override
+//            public void onChanged(List<String> strings) {
+//                exposureCounter.setText(String.valueOf(strings.size()));
+//                Log.d(TAG, "onChanged: Exposers" + strings.size());
+//                for (String value: strings) {
+//                    Log.d(TAG, "onChanged: "+ value);
+//                    Map<String,Object> Exposure = new HashMap<>();
+//                    Exposure.put("Exposer",value);
+//                    exposerID = value;
+//
+//                    exposerRef.document(exposerID).collection("VictimsID").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                        @Override
+//                        public void onSuccess(DocumentReference documentReference) {
+//                            Log.d(TAG, "onSuccess: Exposee IDs Added");
+//                        }
+//                    });
+//
+//                    userRef.collection("ExposersIDs").add(Exposure).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                        @Override
+//                        public void onSuccess(DocumentReference documentReference) {
+//                            Log.d(TAG, "onSuccess: Exposer IDs Added");
+//                        }
+//                    });
+//
+//                }
+//
+//
+//            }
+//        });
         //Cases Counter
                 class Cases{
                     String diseaseName;
