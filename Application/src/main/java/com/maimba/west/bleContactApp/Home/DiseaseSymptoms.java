@@ -42,9 +42,9 @@ public class DiseaseSymptoms extends AppCompatActivity {
         CollectionReference collectionReference = fStore.collection("Diseases");
         symptomsList = new ArrayList<>();
 
-        RecyclerView recyclerView = findViewById(R.id.rc_Symptoms);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(false);
+//        RecyclerView recyclerView = findViewById(R.id.rc_Symptoms);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(false);
 
         SymptomsAdapter symptomsAdapter = new SymptomsAdapter();
 
@@ -52,38 +52,40 @@ public class DiseaseSymptoms extends AppCompatActivity {
 
 
 
+
+
 //        Query diseaseQuery = collectionReference;
 
-        collectionReference
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                Symptoms symptoms = new Symptoms();
-
-
-                if (task.isSuccessful()){
-
-                    for (QueryDocumentSnapshot queryDocumentSnapshot: task.getResult()){
-                        symptoms.diseaseName = queryDocumentSnapshot.getString("Name");
-                        symptoms.incubationPeriod = queryDocumentSnapshot.getString("Incubation Period");
-                        symptoms.scienceName = queryDocumentSnapshot.getString("Scientific name");
-                        symptoms.common = queryDocumentSnapshot.getString("Common Symptoms");
-                        symptoms.severe = queryDocumentSnapshot.getString("Severe Symptoms");
-
-                        symptomsList.add(symptoms);
-                        symptomsAdapter.setSymptomsList(symptomsList);
-                        recyclerView.setAdapter(symptomsAdapter);
-
-                        Log.d(TAG, "onComplete: " + symptomsList.size());
-
-
-                    }
-                }else {
-                    Log.d(TAG, "onComplete:  Failed getting diseases");
-                }
-            }
-        });
+//        collectionReference
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                Symptoms symptoms = new Symptoms();
+//
+//
+//                if (task.isSuccessful()){
+//
+//                    for (QueryDocumentSnapshot queryDocumentSnapshot: task.getResult()){
+//                        symptoms.diseaseName = queryDocumentSnapshot.getString("Name");
+//                        symptoms.incubationPeriod = queryDocumentSnapshot.getString("Incubation Period");
+//                        symptoms.scienceName = queryDocumentSnapshot.getString("Scientific name");
+//                        symptoms.common = queryDocumentSnapshot.getString("Common Symptoms");
+//                        symptoms.severe = queryDocumentSnapshot.getString("Severe Symptoms");
+//
+//                        symptomsList.add(symptoms);
+//                        symptomsAdapter.setSymptomsList(symptomsList);
+//                        recyclerView.setAdapter(symptomsAdapter);
+//
+//                        Log.d(TAG, "onComplete: " + symptomsList.size());
+//
+//
+//                    }
+//                }else {
+//                    Log.d(TAG, "onComplete:  Failed getting diseases");
+//                }
+//            }
+//        });
 
 
 

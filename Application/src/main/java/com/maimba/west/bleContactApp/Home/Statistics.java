@@ -60,9 +60,9 @@ public class Statistics extends AppCompatActivity {
         casesRef = fStore.collection("cases");
         exposerRef = fStore.collection("users");
         caseQuery = casesRef
-                .whereEqualTo(FieldPath.documentId(),userID);
+                .whereEqualTo("userID",userID);
 
-        exposerQuery = exposerRef.document().collection("Exposers IDs")
+        exposerQuery = exposerRef.document().collection("ExposersIDs")
                 .whereEqualTo("Exposer",userID);
 
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
@@ -78,7 +78,7 @@ public class Statistics extends AppCompatActivity {
                     Map<String,Object> Exposure = new HashMap<>();
                     Exposure.put("Exposer",value);
 
-                    userRef.collection("Exposers IDs").add(Exposure).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    userRef.collection("ExposersIDs").add(Exposure).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d(TAG, "onSuccess: Exposer IDs Added");
@@ -103,9 +103,9 @@ public class Statistics extends AppCompatActivity {
                                 if(task.isSuccessful()){
 
                                     for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
-                                        Log.d(TAG, "onComplete: " + documentSnapshot.getString("First Name"));
+                                        Log.d(TAG, "onComplete: " + documentSnapshot.getString("FirstName"));
                                         userCases.diseaseName = documentSnapshot.getString("Disease");
-                                        userCases.dateReported = documentSnapshot.getDate("Date Reported").toString();
+                                        userCases.dateReported = documentSnapshot.getDate("DateReported").toString();
 
                                         casesList.add(userCases);
                                         Log.d(TAG, "onComplete: "+ documentSnapshot.getString("Disease"));
@@ -143,9 +143,9 @@ public class Statistics extends AppCompatActivity {
                     for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
 
 
-                        victims.FName = documentSnapshot.getString("First Name");
-                        victims.LName = documentSnapshot.getString("Last Name");
-                        victims.Phone = documentSnapshot.getString("Phone Number");
+                        victims.FName = documentSnapshot.getString("FirstName");
+                        victims.LName = documentSnapshot.getString("LastName");
+                        victims.Phone = documentSnapshot.getString("PhoneNumber");
                         exposers.add(victims);
 
 

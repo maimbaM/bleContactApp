@@ -55,6 +55,30 @@
         You have been Exposed to</string>
     <string name="NtoP">Now well Change Status</string>
     <string name="NumberofCases">Number of Cases You have experienced</string>
-    <string name="NumberofVictims">No. Of People You have Exposed</string>
+    <string name="NumberofVictims">Number of people you have Exposed</string>
+
+    // Symptoms
+    <string name="covid">CoronaVirus</string>
+    <string name="covidSym">Coomon Symptoms : Loss of taste or smell,Nasal congestion,
+        Conjunctivitis,Sore throat,Headache,Muscle or joint pain,
+        Different types of skin rash,Nausea or vomitting,Diarrhea,Chills or dizziness</string>
+    <string name="covidSevere">Severe Symptoms : Shortness of breath,Loss of appetite,Confusion,Persistent pain or
+        pressure in the chest,High body temperature(above 38 c)</string>
+    <string name="TB">TuberCulosis</string>
+    <string name="Ebola">Ebola</string>
+    <string name="ebolaSym">Symptoms: fever (greater than 101.5°F), severe headache, muscle pain, weakness,
+        diarrhea, vomiting, stomach pain, and unexplained bleeding or bruising.</string>
+    <string name="Diptheria">Diptheria</string>
+    <string name="dipSym">Early Symptoms : sore throat and fever</string>
+    <string name="dpSevere">Severe Symptoms:  enlarged lymph nodes (swollen glands),skin lesions that may be painful, red, and swollen</string>
+    <string name="TBSym">Common Symptoms : weakness or fatigue,no appetite,chills,fever</string>
+    <string name="TBSevere">Severe Symptoms : Cough with Sputum and blood at times,Chest pains,Weakness,Weight loss Fever Night sweats</string>
+    <string name="flu">Flu (Influenza)</string>
+    <string name="flSym">Common Symptoms : Fever Aches (muscle, body, and headaches) Chills Tiredness (fatigue) Sudden onset Cough, runny or stuffy nose, and/or sore throat</string>
+    <string name="flSevere">Severe Symptoms : Vomiting and diarrhea (more common in children than adults)</string>
+    <string name="Cholera">Cholera</string>
+    <string name="chSym">Common Symptoms : profuse watery diarrhea, sometimes described as “rice-water stools” vomiting</string>
+    <string name="chSevere">Severe Symptoms : leg cramps restlessness or irritability,dry mucous membranes low blood pressure, Severe dehydration can cause death</string>
+
 
 </resources>

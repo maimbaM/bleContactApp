@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity {
 //        packetsViewModel.insertWithTime(pktdata, lastLocation);
 //        workRequest = new PeriodicWorkRequest().Builder(ScanWorker.class,15, TimeUnit.MINUTES).build();
         ScanWorkRequest = new PeriodicWorkRequest.Builder(ScannerWorker.class,15,TimeUnit.MINUTES)
-//                .setInitialDelay(5,TimeUnit.MINUTES)
+                .setInitialDelay(14,TimeUnit.MINUTES)
                 .build();
 //        locationWorkRequest = new PeriodicWorkRequest.Builder(LocationService.class,15,TimeUnit.MINUTES)
 //                .setInitialDelay(5,TimeUnit.MINUTES).build();

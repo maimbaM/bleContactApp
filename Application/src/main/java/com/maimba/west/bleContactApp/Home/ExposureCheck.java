@@ -68,20 +68,12 @@ public class ExposureCheck extends AppCompatActivity {
         mpacketsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         mpacketsViewModel.deleteAllExpPackets();
 
-        RecyclerView recyclerView = findViewById(R.id.rc_Exposure);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(false);
+
 //
-        MatchedAdapter adapter = new MatchedAdapter();
-        recyclerView.setAdapter(adapter);
 
 
-        mpacketsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
-            @Override
-            public void onChanged(List<MatchedPackets> matchedPackets) {
-                adapter.setMatchedPackets(matchedPackets);
-            }
-        });
+
+
 
 
     }
@@ -108,15 +100,6 @@ public class ExposureCheck extends AppCompatActivity {
         public Downloaded() {
         }
 
-
-
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            if (obj instanceof Downloaded) {
-                return ((Downloaded) obj).userPacketData == userPacketData;
-            }
-            return false;
-        }
     }
 
 
@@ -141,13 +124,13 @@ public class ExposureCheck extends AppCompatActivity {
         Query caseQuery = null;
         if (mLastQueriedDocument != null){
             caseQuery = collectionReference
-                    .whereGreaterThan("Date Reported", finalDay)
+                    .whereGreaterThan("DateReported", finalDay)
                     .startAfter(mLastQueriedDocument);
 
 
         }else{
             caseQuery = collectionReference
-                    .whereGreaterThan("Date Reported", finalDay);
+                    .whereGreaterThan("DateReported", finalDay);
         }
 
         caseQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -156,15 +139,16 @@ public class ExposureCheck extends AppCompatActivity {
                 if (task.isSuccessful()){
 
                     for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
-                        Log.d(TAG, "onComplete: " + documentSnapshot.getString("User Packet Data"));
-                        caseDownload.FirstName = documentSnapshot.getString("First Name");
-                        caseDownload.LastName = documentSnapshot.getString("Last Name");
-                        caseDownload.userID = documentSnapshot.getString("USER ID");
-                        caseDownload.userPacketData = documentSnapshot.getString("User Packet Data");
+                        Log.d(TAG, "onComplete: " + documentSnapshot.getString("UserPacketData"));
+                        caseDownload.FirstName = documentSnapshot.getString("FirstName");
+                        caseDownload.LastName = documentSnapshot.getString("LastName");
+                        caseDownload.userID = documentSnapshot.getString("userID");
+                        caseDownload.userPacketData = documentSnapshot.getString("UserPacketData");
                         caseDownload.caseDisease = documentSnapshot.getString("Disease");
-                        caseDownload.userPhone = documentSnapshot.getString("User Phone");
-                        caseDownload.caseDateReported = documentSnapshot.getDate("Date Reported").toString();
+                        caseDownload.userPhone = documentSnapshot.getString("UserPhone");
+                        caseDownload.caseDateReported = documentSnapshot.getDate("DateReported").toString();
                         DownloadedPkts.add(caseDownload);
+                        Log.d(TAG, "onComplete: got Exp pkts");
 
                         ExposurePacket exposurePacket = new ExposurePacket(caseDownload.userPacketData,caseDownload.userID,caseDownload.FirstName,caseDownload.LastName,caseDownload.userPhone,caseDownload.caseDisease,caseDownload.caseDateReported);
                         mpacketsViewModel.insertExp(exposurePacket);
@@ -193,6 +177,18 @@ public class ExposureCheck extends AppCompatActivity {
         super.onStart();
 
         getExposurePackets2();
+
+        RecyclerView recyclerView = findViewById(R.id.rc_Exposure);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(false);
+        MatchedAdapter adapter = new MatchedAdapter();
+        recyclerView.setAdapter(adapter);
+        mpacketsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
+            @Override
+            public void onChanged(List<MatchedPackets> matchedPackets) {
+                adapter.setMatchedPackets(matchedPackets);
+            }
+        });
 
     }
 

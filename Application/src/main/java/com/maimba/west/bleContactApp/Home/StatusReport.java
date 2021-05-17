@@ -121,11 +121,11 @@ public class StatusReport extends AppCompatActivity {
                 if(task.isSuccessful()){
                     DocumentSnapshot userDocument = task.getResult();
                     if(userDocument.exists()){
-                        FName = userDocument.getString("First Name");
-                        LName = userDocument.getString("Last Name");
-                        userpktdata = userDocument.getString("Service Data");
+                        FName = userDocument.getString("FirstName");
+                        LName = userDocument.getString("LastName");
+                        userpktdata = userDocument.getString("ServiceData");
 
-                        userPhone = userDocument.getString("Phone Number");}
+                        userPhone = userDocument.getString("PhoneNumber");}
                     Log.d(TAG, "onComplete: Got user details");
                     }else{
                     Log.d(TAG,"Failed getting user details");
@@ -151,15 +151,15 @@ public class StatusReport extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-                    DocumentReference casesCollection = fStore.collection("cases").document(userid);
+                    DocumentReference casesCollection = fStore.collection("cases").document();
                     Map<String,Object> positive_case = new HashMap<>();
-                    positive_case.put("USER ID",userid);
-                    positive_case.put("First Name", FName);
-                    positive_case.put("Last Name", LName);
-                    positive_case.put("User Phone", userPhone);
+                    positive_case.put("userID",userid);
+                    positive_case.put("FirstName", FName);
+                    positive_case.put("LastName", LName);
+                    positive_case.put("UserPhone", userPhone);
                     positive_case.put("Disease",diseaseName);
-                    positive_case.put("User Packet Data",userpktdata);
-                    positive_case.put("Date Reported", FieldValue.serverTimestamp());
+                    positive_case.put("UserPacketData",userpktdata);
+                    positive_case.put("DateReported", FieldValue.serverTimestamp());
 
 
                     userRef.update("Status",newStatus);

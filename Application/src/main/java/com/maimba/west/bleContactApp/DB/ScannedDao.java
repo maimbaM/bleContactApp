@@ -18,13 +18,15 @@ public interface ScannedDao {
     void delete(ScannedPacket scannedPacket);
 
     @Query("DELETE FROM ScannedPackets_Table")
-    void deleteOldPackets();
+    void deleteAllPackets();
 
     @Query("INSERT INTO ScannedPackets_Table (pktData,location) VALUES (:pktData,:location) ")
     void insertWithTime(String pktData, String location);
 
     @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
     LiveData<List<ScannedPacket>> getAllScanPkts();
+    @Query("DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-1 day')")
+    void deleteolder();
 
 
     //Exposure Table methods
