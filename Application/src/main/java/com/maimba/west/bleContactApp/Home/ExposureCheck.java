@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.maimba.west.bleContactApp.Constants;
 import com.maimba.west.bleContactApp.DB.ExposurePacket;
 import com.maimba.west.bleContactApp.DB.MatchedPackets;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
@@ -53,6 +54,7 @@ public class ExposureCheck extends AppCompatActivity {
     private PacketsViewModel mpacketsViewModel;
     private ExposurePacket exposurePacket;
     private DocumentSnapshot mLastQueriedDocument;
+    private long IncPeriod;
 
 
 
@@ -109,11 +111,11 @@ public class ExposureCheck extends AppCompatActivity {
     private void getExposurePackets2(){
 
         //get the date before ie currentDate - incubation period
-
+        IncPeriod = Constants.currentDiseaseInc;
         Date newDay = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(newDay);
-        c.add(Calendar.DAY_OF_YEAR,-14);
+        c.add(Calendar.DAY_OF_YEAR, (int) -IncPeriod);
         Date finalDay = c.getTime();
         System.out.println(newDay);
         System.out.println(finalDay);

@@ -174,7 +174,7 @@ public class PacketsRepository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            scannedDao.deleteOldPackets();
+            scannedDao.deleteOlder();
             return null;
         }
     }

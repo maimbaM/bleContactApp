@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.maimba.west.bleContactApp.App;
 import com.maimba.west.bleContactApp.Constants;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.R;
@@ -54,6 +55,7 @@ public class StatusReport extends AppCompatActivity {
         userid = mfirebaseuser.getUid();
         Status = findViewById(R.id.tvCurrentStatus);
         Log.d(TAG, "onCreate: " + userid);
+        diseaseName = Constants.currentDiseaseName;
 
 
 
@@ -97,23 +99,9 @@ public class StatusReport extends AppCompatActivity {
 
 
 
-        /*
-          Get disease name
-         */
 
-        diseaseref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if (documentSnapshot.exists()){
-                    diseaseName = documentSnapshot.getString("Name");}
-                    Log.d(TAG, "onComplete: Got disease Name");
-                }else{
-                    Log.d(TAG,"Failed getting disease name");
-                }
-            }
-        });
+
+
         //Get User Name & Phone
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

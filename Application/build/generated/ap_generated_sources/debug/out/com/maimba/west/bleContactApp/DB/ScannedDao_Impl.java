@@ -35,9 +35,11 @@ public final class ScannedDao_Impl implements ScannedDao {
 
   private final EntityDeletionOrUpdateAdapter<ExposurePacket> __deletionAdapterOfExposurePacket;
 
-  private final SharedSQLiteStatement __preparedStmtOfDeleteOldPackets;
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAllPackets;
 
   private final SharedSQLiteStatement __preparedStmtOfInsertWithTime;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteOlder;
 
   private final SharedSQLiteStatement __preparedStmtOfDeleteOldExpPkts;
 
@@ -190,7 +192,7 @@ public final class ScannedDao_Impl implements ScannedDao {
         stmt.bindLong(1, value.getId());
       }
     };
-    this.__preparedStmtOfDeleteOldPackets = new SharedSQLiteStatement(__db) {
+    this.__preparedStmtOfDeleteAllPackets = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
         final String _query = "DELETE FROM ScannedPackets_Table";
@@ -201,6 +203,13 @@ public final class ScannedDao_Impl implements ScannedDao {
       @Override
       public String createQuery() {
         final String _query = "INSERT INTO ScannedPackets_Table (pktData,location) VALUES (?,?) ";
+        return _query;
+      }
+    };
+    this.__preparedStmtOfDeleteOlder = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-1 day')";
         return _query;
       }
     };
@@ -286,16 +295,16 @@ public final class ScannedDao_Impl implements ScannedDao {
   }
 
   @Override
-  public void deleteOldPackets() {
+  public void deleteAllPackets() {
     __db.assertNotSuspendingTransaction();
-    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteOldPackets.acquire();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAllPackets.acquire();
     __db.beginTransaction();
     try {
       _stmt.executeUpdateDelete();
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
-      __preparedStmtOfDeleteOldPackets.release(_stmt);
+      __preparedStmtOfDeleteAllPackets.release(_stmt);
     }
   }
 
@@ -322,6 +331,20 @@ public final class ScannedDao_Impl implements ScannedDao {
     } finally {
       __db.endTransaction();
       __preparedStmtOfInsertWithTime.release(_stmt);
+    }
+  }
+
+  @Override
+  public void deleteOlder() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteOlder.acquire();
+    __db.beginTransaction();
+    try {
+      _stmt.executeUpdateDelete();
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+      __preparedStmtOfDeleteOlder.release(_stmt);
     }
   }
 

@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -41,8 +42,10 @@ public class Statistics extends AppCompatActivity {
     private CollectionReference casesRef,exposerRef;
     private String userID;
     private String expID;
+    private String exposerID;
     private Query caseQuery,exposerQuery;
-
+    private String FName,LName,userEmail,userPhone;
+    private Map<String,Object> userDetails;
 
 
     @Override
@@ -52,6 +55,7 @@ public class Statistics extends AppCompatActivity {
         exposureCounter = findViewById(R.id.counter);
         caseCounter = findViewById(R.id.casecounter);
         victimCounter = findViewById(R.id.victimcounter);
+        userDetails = new HashMap<>();
         fAuth = FirebaseAuth.getInstance();
         fStore =FirebaseFirestore.getInstance();
         mfirebaseuser = fAuth.getCurrentUser();
@@ -67,6 +71,31 @@ public class Statistics extends AppCompatActivity {
 
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
 
+        //Get User Details
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot userDocument = task.getResult();
+                    if(userDocument.exists()){
+                        FName = userDocument.getString("FirstName");
+                        LName = userDocument.getString("LastName");
+                        userEmail = userDocument.getString("ServiceData");
+                        userPhone = userDocument.getString("PhoneNumber");
+
+
+                        userDetails.put("FistName",FName);
+                        userDetails.put("LastName",LName);
+                        userDetails.put("Email",userEmail);
+                        userDetails.put("Phone",userPhone);
+                    }
+                    Log.d(TAG, "onComplete: Got user details");
+                }else{
+                    Log.d(TAG,"Failed getting user details");
+                }
+            }
+        });
+
         //Exposers
         packetsViewModel.getAllExpUID().observe(this, new Observer<List<String>>() {
             @Override
@@ -77,6 +106,14 @@ public class Statistics extends AppCompatActivity {
                     Log.d(TAG, "onChanged: "+ value);
                     Map<String,Object> Exposure = new HashMap<>();
                     Exposure.put("Exposer",value);
+                    exposerID = value;
+
+                    exposerRef.document(exposerID).collection("Exposees").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "onSuccess: Exposee IDs Added");
+                        }
+                    });
 
                     userRef.collection("ExposersIDs").add(Exposure).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override

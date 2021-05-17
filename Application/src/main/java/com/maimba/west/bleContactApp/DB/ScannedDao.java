@@ -26,7 +26,7 @@ public interface ScannedDao {
     @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
     LiveData<List<ScannedPacket>> getAllScanPkts();
     @Query("DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-1 day')")
-    void deleteolder();
+    void deleteOlder();
 
 
     //Exposure Table methods
