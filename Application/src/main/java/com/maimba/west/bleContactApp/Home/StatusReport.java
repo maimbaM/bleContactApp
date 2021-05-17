@@ -64,7 +64,7 @@ public class StatusReport extends AppCompatActivity {
         negateButton.setVisibility(View.INVISIBLE);
 //        reportButton.setVisibility(View.INVISIBLE);
 
-        diseaseref =  fStore.collection("Diseases").document("Tuberculosis");
+        diseaseref =  fStore.collection("Diseases").document(diseaseName);
         userRef = fStore.collection("users").document(userid);
 
 
@@ -78,7 +78,7 @@ public class StatusReport extends AppCompatActivity {
                     if(userDocument.exists()){
                         currentStatus = userDocument.getString("Status");
                         Status.setText(currentStatus);
-                        if(currentStatus.equals("Negative")){
+                        if(currentStatus.equals("Negative") || currentStatus.equals("Exposed")){
                             newStatus = "Positive";
                             negateButton.setVisibility(View.INVISIBLE);
                         }else if (currentStatus.equals("Positive")){
@@ -151,6 +151,7 @@ public class StatusReport extends AppCompatActivity {
 
 
                     userRef.update("Status",newStatus);
+                    diseaseref.update("Counter",FieldValue.increment(1));
                     casesCollection.set(positive_case).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

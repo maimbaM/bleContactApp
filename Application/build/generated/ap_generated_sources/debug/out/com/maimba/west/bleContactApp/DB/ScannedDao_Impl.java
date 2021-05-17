@@ -209,7 +209,7 @@ public final class ScannedDao_Impl implements ScannedDao {
     this.__preparedStmtOfDeleteOlder = new SharedSQLiteStatement(__db) {
       @Override
       public String createQuery() {
-        final String _query = "DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-1 day')";
+        final String _query = "DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-inc day')";
         return _query;
       }
     };

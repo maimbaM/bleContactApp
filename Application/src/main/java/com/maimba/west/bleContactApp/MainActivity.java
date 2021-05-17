@@ -77,14 +77,15 @@ public class MainActivity extends FragmentActivity {
         nextBtn = findViewById(R.id.nextButton);
 //        System.out.println(Constants.bleServiceData);
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
+        packetsViewModel.deleteOldPackets();
 //        packetsViewModel.deleteAllExpPackets();
         workManager = workManager.getInstance(getApplicationContext());
 
 
 //        packetsViewModel.insertWithTime(pktdata, lastLocation);
 //        workRequest = new PeriodicWorkRequest().Builder(ScanWorker.class,15, TimeUnit.MINUTES).build();
-        ScanWorkRequest = new PeriodicWorkRequest.Builder(ScannerWorker.class,15,TimeUnit.MINUTES)
-                .setInitialDelay(14,TimeUnit.MINUTES)
+        ScanWorkRequest = new PeriodicWorkRequest.Builder(ScannerWorker.class,15,TimeUnit.MINUTES,13,TimeUnit.MINUTES)
+//                .setInitialDelay(14,TimeUnit.MINUTES)
                 .build();
 //        locationWorkRequest = new PeriodicWorkRequest.Builder(LocationService.class,15,TimeUnit.MINUTES)
 //                .setInitialDelay(5,TimeUnit.MINUTES).build();

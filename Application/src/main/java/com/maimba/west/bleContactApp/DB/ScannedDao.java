@@ -6,10 +6,13 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import com.maimba.west.bleContactApp.Constants;
+
 import java.util.List;
 
 @Dao
 public interface ScannedDao {
+    int inc = (int) Constants.currentDiseaseInc;
 
     // Scanned Table methods
     @Insert
@@ -25,7 +28,7 @@ public interface ScannedDao {
 
     @Query("SELECT * FROM scannedpackets_table ORDER BY timeSeen DESC")
     LiveData<List<ScannedPacket>> getAllScanPkts();
-    @Query("DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-1 day')")
+    @Query("DELETE FROM scannedpackets_table WHERE timeSeen < DATETIME('now', '-inc day')")
     void deleteOlder();
 
 
@@ -63,7 +66,7 @@ public interface ScannedDao {
 
     ////    Check Exposure Query
      @Query("SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , " +
-             "ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone " +
+             "ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone , ExposurePackets_Table.userID " +
             "FROM ScannedPackets_Table " +
             "INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData")
    LiveData<List<MatchedPackets>>   getMatchedPackets();

@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,11 +52,13 @@ public class ExposureCheck extends AppCompatActivity {
     public String casesnap;
     private Button checkExposure;
     public String TAG;
-    //    private DBHelper DB ;
     private PacketsViewModel mpacketsViewModel;
     private ExposurePacket exposurePacket;
     private DocumentSnapshot mLastQueriedDocument;
     private long IncPeriod;
+    private boolean Exposed;
+    private String userID;
+    private DocumentReference userDoc;
 
 
 
@@ -67,8 +71,10 @@ public class ExposureCheck extends AppCompatActivity {
         setContentView(R.layout.activity_exposure_check);
         fStore= FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
         mpacketsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         mpacketsViewModel.deleteAllExpPackets();
+        userDoc = fStore.collection("users").document(userID);
 
 
 //
@@ -89,15 +95,6 @@ public class ExposureCheck extends AppCompatActivity {
         private String caseDisease;
         private String caseDateReported;
 
-//        public Downloaded(String FirstName,String LastName,String userID, String userPacketData, String userPhone, String caseDisease, String caseDateReported) {
-//            this.FirstName = FirstName;
-//            this.LastName = LastName;
-//            this.userID = userID;
-//            this.userPacketData = userPacketData;
-//            this.userPhone = userPhone;
-//            this.caseDisease = caseDisease;
-//            this.caseDateReported = caseDateReported;
-//        }
 
         public Downloaded() {
         }
@@ -189,9 +186,20 @@ public class ExposureCheck extends AppCompatActivity {
             @Override
             public void onChanged(List<MatchedPackets> matchedPackets) {
                 adapter.setMatchedPackets(matchedPackets);
+
+                if (matchedPackets.size()>0){
+                    Exposed = true;
+                }
             }
+
         });
 
+        userDoc.update("Status","Exposed").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "onSuccess: Exposed Status Updated");
+            }
+        });
     }
 
 

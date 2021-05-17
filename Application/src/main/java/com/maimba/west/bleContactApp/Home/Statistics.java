@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.maimba.west.bleContactApp.DB.MatchedPackets;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.DB.ScannedPacket;
 import com.maimba.west.bleContactApp.R;
@@ -44,7 +45,7 @@ public class Statistics extends AppCompatActivity {
     private String expID;
     private String exposerID;
     private Query caseQuery,exposerQuery;
-    private String FName,LName,userEmail,userPhone;
+    private String FName,LName,userEmail,userPhone,timeSeen;
     private Map<String,Object> userDetails;
 
 
@@ -66,8 +67,7 @@ public class Statistics extends AppCompatActivity {
         caseQuery = casesRef
                 .whereEqualTo("userID",userID);
 
-        exposerQuery = exposerRef.document().collection("ExposersIDs")
-                .whereEqualTo("Exposer",userID);
+        exposerQuery = exposerRef.document(userID).collection("Victims");
 
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
 
@@ -96,6 +96,15 @@ public class Statistics extends AppCompatActivity {
             }
         });
 
+        packetsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
+            @Override
+            public void onChanged(List<MatchedPackets> matchedPackets) {
+                MatchedPackets currentMatched = new MatchedPackets();
+                timeSeen = currentMatched.getTimeExposed();
+                expID = currentMatched.getUserID();
+            }
+        });
+
         //Exposers
         packetsViewModel.getAllExpUID().observe(this, new Observer<List<String>>() {
             @Override
@@ -108,7 +117,7 @@ public class Statistics extends AppCompatActivity {
                     Exposure.put("Exposer",value);
                     exposerID = value;
 
-                    exposerRef.document(exposerID).collection("Exposees").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    exposerRef.document(exposerID).collection("VictimsID").add(userDetails).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d(TAG, "onSuccess: Exposee IDs Added");
@@ -167,10 +176,11 @@ public class Statistics extends AppCompatActivity {
             String FName;
             String LName;
             String Phone;
+            String Email;
 
         }
         Victims victims = new Victims();
-        List<Victims> exposers = new ArrayList<>();
+        List<Victims> exposee= new ArrayList<>();
 
 
         exposerQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -183,11 +193,13 @@ public class Statistics extends AppCompatActivity {
                         victims.FName = documentSnapshot.getString("FirstName");
                         victims.LName = documentSnapshot.getString("LastName");
                         victims.Phone = documentSnapshot.getString("PhoneNumber");
-                        exposers.add(victims);
+                        victims.Email = documentSnapshot.getString("Email");
+
+                        exposee.add(victims);
 
 
-                        victimCounter.setText(String.valueOf(exposers.size()));
-                        Log.d(TAG, "onComplete: Victims" + exposers.size());
+                        victimCounter.setText(String.valueOf(exposee.size()));
+                        Log.d(TAG, "onComplete: Victims" + exposee.size());
                     }
                 }else {
                     Log.d(TAG, "onComplete: Failed getting Exposee data");

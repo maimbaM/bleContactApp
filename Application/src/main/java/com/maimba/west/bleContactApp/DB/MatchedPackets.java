@@ -20,6 +20,8 @@ public class MatchedPackets {
     private String name;
     @ColumnInfo(name = "userPhone")
     private String phone;
+    @ColumnInfo(name = "userID")
+    private String userID;
 
     @Ignore
     private boolean expandable;
@@ -38,7 +40,13 @@ public class MatchedPackets {
        this.expandable = false;
     }
 
+    public String getUserID() {
+        return userID;
+    }
 
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 
     public String getDisease() {
         return disease;
