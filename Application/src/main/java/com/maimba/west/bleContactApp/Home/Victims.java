@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.maimba.west.bleContactApp.DB.MatchedPackets;
 import com.maimba.west.bleContactApp.R;
 import com.maimba.west.bleContactApp.VictimModel;
 
@@ -97,11 +99,13 @@ public class Victims extends AppCompatActivity {
                 holder.lName.setText(model.getLastName());
                 holder.Loc.setText(model.getLocation());
                 holder.Time.setText((CharSequence) model.getTimeSeen());
-
                 holder.Phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        VictimModel victimModelobj = model.get(getAdapterPosition());
                         Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:254746492828"));
+                        startActivity(intent);
 
                     }
                 });
