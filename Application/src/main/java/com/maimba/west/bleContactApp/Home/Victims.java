@@ -54,33 +54,10 @@ public class Victims extends AppCompatActivity {
        fAuth = FirebaseAuth.getInstance();
        fStore = FirebaseFirestore.getInstance();
        userID = fAuth.getCurrentUser().getUid();
-       userDoc = fStore.collection("users").document(userID).collection("Victims");
 
-        userDoc.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-
-                    for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
-
-                        fName = documentSnapshot.getString("FirstName");
-                        lName = documentSnapshot.getString("LastName");
-                        loc   = documentSnapshot.getString("Location");
-                        phone = documentSnapshot.getString("Phone");
-                        time = documentSnapshot.getDate("TimeSeen").toString();
-                    }
-
-            }else {
-                    Log.d(TAG, "onComplete: Got Victim Details");
-                }
-        }
-
-
-
-    });
 
         //Query
-        Query query = fStore.collection("users").document(userID).collection("Victims");
+        Query query = fStore.collection("users").document(userID).collection("VictimsID").orderBy("TimeSeen" , Query.Direction.DESCENDING);
         //Recycler Options
         FirestoreRecyclerOptions<VictimModel> options = new FirestoreRecyclerOptions.Builder<VictimModel>()
                 .setQuery(query,VictimModel.class)
@@ -100,13 +77,13 @@ public class Victims extends AppCompatActivity {
                 holder.fName.setText(model.getFirstName());
                 holder.lName.setText(model.getLastName());
                 holder.Loc.setText(model.getLocation());
-                holder.Time.setText((CharSequence) model.getTimeSeen());
+                holder.Time.setText( model.getTimeSeen());
                 holder.Phone.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 //                        VictimModel victimModelobj = model.get(getAdapterPosition());
                         Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:254746492828"));
+                        intent.setData(Uri.parse("tel:0746492828"));
                         startActivity(intent);
 
                     }

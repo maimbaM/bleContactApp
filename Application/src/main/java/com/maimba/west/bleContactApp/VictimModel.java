@@ -8,12 +8,12 @@ public class VictimModel {
     private String LastName;
     private String Location;
     private String Phone;
-    private Date TimeSeen;
+    private String TimeSeen;
 
     public VictimModel() {
     }
 
-    public VictimModel(String firstName, String lastName, String location, String phone, Date timeSeen) {
+    public VictimModel(String firstName, String lastName, String location, String phone, String timeSeen) {
         FirstName = firstName;
         LastName = lastName;
         Location = location;
@@ -53,11 +53,11 @@ public class VictimModel {
         Phone = phone;
     }
 
-    public Date getTimeSeen() {
+    public String getTimeSeen() {
         return TimeSeen;
     }
 
-    public void setTimeSeen(Date timeSeen) {
+    public void setTimeSeen(String timeSeen) {
         TimeSeen = timeSeen;
     }
 }

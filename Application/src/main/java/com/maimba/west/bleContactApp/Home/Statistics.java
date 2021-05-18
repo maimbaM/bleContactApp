@@ -32,6 +32,7 @@ import com.maimba.west.bleContactApp.R;
 import com.maimba.west.bleContactApp.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,6 +203,8 @@ public class Statistics extends AppCompatActivity {
             String LName;
             String Phone;
             String Email;
+            String Location;
+            Date timeSeen;
 
         }
         Victims victims = new Victims();
@@ -219,6 +222,8 @@ public class Statistics extends AppCompatActivity {
                         victims.LName = documentSnapshot.getString("LastName");
                         victims.Phone = documentSnapshot.getString("PhoneNumber");
                         victims.Email = documentSnapshot.getString("Email");
+                        victims.Location = documentSnapshot.getString("Location");
+//                        victims.timeSeen = documentSnapshot.getDate("TimeSeen");
 
                         exposee.add(victims);
 
