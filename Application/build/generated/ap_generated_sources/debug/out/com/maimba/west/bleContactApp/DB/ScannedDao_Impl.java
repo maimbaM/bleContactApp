@@ -450,8 +450,28 @@ public final class ScannedDao_Impl implements ScannedDao {
   }
 
   @Override
+  public List<String> getIfServiceData() {
+    final String _sql = "SELECT ServiceData_Table.serviceData FROM ServiceData_Table ";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final List<String> _result = new ArrayList<String>(_cursor.getCount());
+      while(_cursor.moveToNext()) {
+        final String _item;
+        _item = _cursor.getString(0);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
+  }
+
+  @Override
   public LiveData<List<MatchedPackets>> getMatchedPackets() {
-    final String _sql = "SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
+    final String _sql = "SELECT DISTINCT ScannedPackets_Table.timeSeen ,ScannedPackets_Table.location , ExposurePackets_Table.caseDisease , ExposurePackets_Table.FirstName , ExposurePackets_Table.userPhone , ExposurePackets_Table.userID FROM ScannedPackets_Table INNER JOIN ExposurePackets_Table on ScannedPackets_Table.pktData = ExposurePackets_Table.userData";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[]{"ScannedPackets_Table","ExposurePackets_Table"}, false, new Callable<List<MatchedPackets>>() {
       @Override
@@ -463,6 +483,7 @@ public final class ScannedDao_Impl implements ScannedDao {
           final int _cursorIndexOfDisease = CursorUtil.getColumnIndexOrThrow(_cursor, "caseDisease");
           final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "FirstName");
           final int _cursorIndexOfPhone = CursorUtil.getColumnIndexOrThrow(_cursor, "userPhone");
+          final int _cursorIndexOfUserID = CursorUtil.getColumnIndexOrThrow(_cursor, "userID");
           final List<MatchedPackets> _result = new ArrayList<MatchedPackets>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final MatchedPackets _item;
@@ -482,6 +503,9 @@ public final class ScannedDao_Impl implements ScannedDao {
             final String _tmpPhone;
             _tmpPhone = _cursor.getString(_cursorIndexOfPhone);
             _item.setPhone(_tmpPhone);
+            final String _tmpUserID;
+            _tmpUserID = _cursor.getString(_cursorIndexOfUserID);
+            _item.setUserID(_tmpUserID);
             _result.add(_item);
           }
           return _result;

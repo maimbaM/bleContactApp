@@ -2,11 +2,14 @@ package com.maimba.west.bleContactApp.Home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +29,7 @@ import com.maimba.west.bleContactApp.DB.MatchedPackets;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.DB.ScannedPacket;
 import com.maimba.west.bleContactApp.R;
+import com.maimba.west.bleContactApp.UserDetails;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,15 +51,19 @@ public class Statistics extends AppCompatActivity {
     private Query caseQuery,exposerQuery;
     private String FName,LName,userEmail,userPhone,timeSeen,location;
     private Map<String,Object> userDetails;
+    private CardView Cases,Victims,Exposers;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-        exposureCounter = findViewById(R.id.counter);
+
         caseCounter = findViewById(R.id.casecounter);
         victimCounter = findViewById(R.id.victimcounter);
+        Cases = findViewById(R.id.casesCounter);
+
+        Victims = findViewById(R.id.victimCounter);
         userDetails = new HashMap<>();
         fAuth = FirebaseAuth.getInstance();
         fStore =FirebaseFirestore.getInstance();
@@ -67,36 +75,23 @@ public class Statistics extends AppCompatActivity {
         caseQuery = casesRef
                 .whereEqualTo("userID",userID);
 
-        exposerQuery = exposerRef.document(userID).collection("Victims");
+        exposerQuery = exposerRef.document(userID).collection("VictimsID");
 
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
 
         //Get User Details
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot userDocument = task.getResult();
-                    if(userDocument.exists()){
-                        FName = userDocument.getString("FirstName");
-                        LName = userDocument.getString("LastName");
-                        userEmail = userDocument.getString("ServiceData");
-                        userPhone = userDocument.getString("PhoneNumber");
+            FName = UserDetails.Fname;
+            LName = UserDetails.Lname;
+            userEmail = UserDetails.email;
+            userPhone = UserDetails.phone;
 
 
 
-                    }
-                    Log.d(TAG, "onComplete: Got user details");
-                }else{
-                    Log.d(TAG,"Failed getting user details");
-                }
-            }
-        });
-
+            //Set Exposers and victims
         packetsViewModel.getAllMatchedPackets().observe(this, new Observer<List<MatchedPackets>>() {
             @Override
             public void onChanged(List<MatchedPackets> matchedPackets) {
-                exposureCounter.setText(String.valueOf(matchedPackets.size()));
+
                 Log.d(TAG, "onChanged: Exposers" + matchedPackets.size());
 
                 for (MatchedPackets value: matchedPackets) {
@@ -243,4 +238,21 @@ public class Statistics extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Cases.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),Cases.class));
+            }
+        });
+        Victims.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),Victims.class));
+            }
+        });
+    }
 }

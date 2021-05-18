@@ -2,6 +2,7 @@ package com.maimba.west.bleContactApp.Home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -39,6 +40,7 @@ public class Victims extends AppCompatActivity {
     private String time,fName,lName,loc,phone;
     private static final String TAG = "Victims";
     private RecyclerView vc_recyclerView;
+    private FirestoreRecyclerAdapter adapter;
 
 
 
@@ -84,7 +86,7 @@ public class Victims extends AppCompatActivity {
                 .setQuery(query,VictimModel.class)
                 .build();
 
-        FirestoreRecyclerAdapter adapter = new FirestoreRecyclerAdapter<VictimModel, VictimViewHolder>(options) {
+         adapter = new FirestoreRecyclerAdapter<VictimModel, VictimViewHolder>(options) {
             @NonNull
             @Override
             public VictimViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -112,6 +114,10 @@ public class Victims extends AppCompatActivity {
 
             }
         };
+
+        vc_recyclerView.setHasFixedSize(false);
+        vc_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        vc_recyclerView.setAdapter(adapter);
 }
 
     private class VictimViewHolder extends RecyclerView.ViewHolder{
@@ -134,5 +140,16 @@ public class Victims extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+}
 

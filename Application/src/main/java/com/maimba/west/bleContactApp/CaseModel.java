@@ -4,30 +4,25 @@ import java.util.Date;
 
 public class CaseModel {
 
-    private String caseDisease;
-    private Date caseDateReported;
+    private String Disease;
+    private Date DateReported;
 
     public CaseModel() {
     }
 
-    public CaseModel(String caseDisease, Date caseDateReported) {
-        this.caseDisease = caseDisease;
-        this.caseDateReported = caseDateReported;
+    public String getDisease() {
+        return Disease;
     }
 
-    public String getCaseDisease() {
-        return caseDisease;
+    public void setDisease(String disease) {
+        Disease = disease;
     }
 
-    public void setCaseDisease(String caseDisease) {
-        this.caseDisease = caseDisease;
+    public Date getDateReported() {
+        return DateReported;
     }
 
-    public Date getCaseDateReported() {
-        return caseDateReported;
-    }
-
-    public void setCaseDateReported(Date caseDateReported) {
-        this.caseDateReported = caseDateReported;
+    public void setDateReported(Date dateReported) {
+        DateReported = dateReported;
     }
 }

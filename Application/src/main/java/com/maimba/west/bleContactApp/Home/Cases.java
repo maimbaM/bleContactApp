@@ -2,6 +2,7 @@ package com.maimba.west.bleContactApp.Home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class Cases extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private RecyclerView recyclerView;
     private String userID;
+    private FirestoreRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class Cases extends AppCompatActivity {
         setContentView(R.layout.activity_cases);
 
         fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
+        recyclerView = findViewById(R.id.cs_recycler);
 
 
 
@@ -45,7 +50,7 @@ public class Cases extends AppCompatActivity {
                 .setQuery(query,CaseModel.class)
                 .build();
 
-        FirestoreRecyclerAdapter adapter = new FirestoreRecyclerAdapter<CaseModel, Cases.CaseViewHolder>(options) {
+         adapter = new FirestoreRecyclerAdapter<CaseModel, Cases.CaseViewHolder>(options) {
             @NonNull
             @Override
             public Cases.CaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,12 +61,15 @@ public class Cases extends AppCompatActivity {
 
             @Override
             protected void onBindViewHolder(@NonNull Cases.CaseViewHolder holder, int position, @NonNull CaseModel model) {
-                holder.diseaseName.setText(model.getCaseDisease());
-                holder.DateReported.setText((CharSequence) model.getCaseDateReported());
+                holder.diseaseName.setText(model.getDisease());
+                holder.DateReported.setText(model.getDateReported().toString());
 
 
             }
         };
+            recyclerView.setHasFixedSize(false);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(adapter);
     }
 
     private class CaseViewHolder extends RecyclerView.ViewHolder{
@@ -78,4 +86,16 @@ public class Cases extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+}

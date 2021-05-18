@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -56,9 +57,9 @@ public class ExposureCheck extends AppCompatActivity {
     private ExposurePacket exposurePacket;
     private DocumentSnapshot mLastQueriedDocument;
     private long IncPeriod;
-    private boolean Exposed;
     private String userID;
     private DocumentReference userDoc;
+    private CollectionReference statusRef;
 
 
 
@@ -75,6 +76,7 @@ public class ExposureCheck extends AppCompatActivity {
         mpacketsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         mpacketsViewModel.deleteAllExpPackets();
         userDoc = fStore.collection("users").document(userID);
+        statusRef = fStore.collection("status");
 
 
 //
@@ -188,18 +190,28 @@ public class ExposureCheck extends AppCompatActivity {
                 adapter.setMatchedPackets(matchedPackets);
 
                 if (matchedPackets.size()>0){
-                    Exposed = true;
+                    updateStatus();
+
+
                 }
             }
 
         });
 
+
+
+
+    }
+
+    private void updateStatus() {
         userDoc.update("Status","Exposed").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "onSuccess: Exposed Status Updated");
             }
         });
+        statusRef.document("Exposed").update("Counter", FieldValue.increment(1));
+        statusRef.document("Negative").update("Counter", FieldValue.increment(-1));
     }
 
 

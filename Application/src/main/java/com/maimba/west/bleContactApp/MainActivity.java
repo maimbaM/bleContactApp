@@ -26,8 +26,13 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.maimba.west.bleContactApp.Advertiser.AdvertiserFragment;
 import com.maimba.west.bleContactApp.DB.PacketsRepository;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
@@ -51,6 +56,8 @@ public class MainActivity extends FragmentActivity {
     private BluetoothAdapter mBluetoothAdapter;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
     private FirebaseAuth fAuth;
+    private FirebaseFirestore fStore;
+    private DocumentReference userDoc;
     private Button nextBtn;
     private PacketsViewModel packetsViewModel;
     private WorkManager workManager;
@@ -63,6 +70,7 @@ public class MainActivity extends FragmentActivity {
     private Application application;
     private static final String TAG = "MainActivity";
     private String myResult;
+    private String userID,Fname,Lname,userData,phone,email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,40 +78,30 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         setTitle(R.string.activity_main_title);
 
-        /*Date currentTime = Calendar.getInstance().getTime();
-        System.out.println(currentTime);
-         */
         fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
+        userDoc = fStore.collection("users").document(userID);
+        getuserDetails();
         nextBtn = findViewById(R.id.nextButton);
-//        System.out.println(Constants.bleServiceData);
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         packetsViewModel.deleteOldPackets();
-//        packetsViewModel.deleteAllExpPackets();
         workManager = workManager.getInstance(getApplicationContext());
 
 
-//        packetsViewModel.insertWithTime(pktdata, lastLocation);
-//        workRequest = new PeriodicWorkRequest().Builder(ScanWorker.class,15, TimeUnit.MINUTES).build();
         ScanWorkRequest = new PeriodicWorkRequest.Builder(ScannerWorker.class,15,TimeUnit.MINUTES,13,TimeUnit.MINUTES)
-//                .setInitialDelay(14,TimeUnit.MINUTES)
+                .setInitialDelay(10,TimeUnit.MINUTES)
                 .build();
-//        locationWorkRequest = new PeriodicWorkRequest.Builder(LocationService.class,15,TimeUnit.MINUTES)
-//                .setInitialDelay(5,TimeUnit.MINUTES).build();
-//        sequalWorkRequest = new PeriodicWorkRequest.Builder(Sequal.class,15,TimeUnit.MINUTES)
-//                .setInitialDelay(5,TimeUnit.MINUTES)
-//
-//                .build();
 
-class LocationThread extends Thread{
-    @Override
-    public void run() {
+
+
+
         startLocationService();
-    }
-}
-LocationThread locationThread = new LocationThread();
-locationThread.start();
 
-        Log.d(TAG, "onCreate: location Thread " + locationThread.getId());
+
+
+
+
         Log.d(TAG, "onCreate: Main thread ID "+ Thread.currentThread().getId());
 
 
@@ -155,10 +153,45 @@ locationThread.start();
         }
     }
 
+    private void getuserDetails() {
+
+        userDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot userDocument = task.getResult();
+                    if(userDocument.exists()){
+                        Fname = userDocument.getString("FirstName");
+                        Lname = userDocument.getString("LastName");
+                        userData = userDocument.getString("ServiceData");
+                        email = userDocument.getString("email");
+                        phone = userDocument.getString("PhoneNumber");
+
+                        UserDetails.Fname = Fname;
+                        UserDetails.Lname = Lname;
+                        UserDetails.userData = userData;
+                        UserDetails.email = email;
+                        UserDetails.phone = phone;
+
+                        Log.d(TAG, "onComplete: getUserDetails success" + UserDetails.Fname);
+
+
+
+
+                    }
+                    Log.d(TAG, "onComplete: Got user details");
+                }else{
+                    Log.d(TAG,"Failed getting user details");
+                }
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser mfirebaseuser =fAuth.getCurrentUser();
+
 
         if (mfirebaseuser!=null){
             //user logged in
@@ -170,11 +203,6 @@ locationThread.start();
         }
         workManager
         .enqueue(ScanWorkRequest);
-//        workManager.getWorkInfoByIdLiveData(ScanWorkRequest.getId()).observe(this,workInfo -> {
-//            if (workInfo != null && workInfo.getState().isFinished()) {
-//                myResult = workInfo.getOutputData().getString(KEY_RESULT);}
-//            Log.d(TAG, "onCreate: "+ myResult);
-//        });
 
     }
 

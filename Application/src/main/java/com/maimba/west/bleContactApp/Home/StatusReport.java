@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -23,6 +24,7 @@ import com.maimba.west.bleContactApp.App;
 import com.maimba.west.bleContactApp.Constants;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.R;
+import com.maimba.west.bleContactApp.UserDetails;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +43,7 @@ public class StatusReport extends AppCompatActivity {
      TextView Status;
      String newStatus;
     String currentStatus;
+    CollectionReference statusRef;
 
 
 
@@ -57,6 +60,11 @@ public class StatusReport extends AppCompatActivity {
         Log.d(TAG, "onCreate: " + userid);
         diseaseName = Constants.currentDiseaseName;
 
+        FName = UserDetails.Fname;
+        LName = UserDetails.Lname;
+        userpktdata = UserDetails.userData;
+        userPhone = UserDetails.phone;
+
 
 
         reportButton = findViewById(R.id.buttonReport);
@@ -66,6 +74,7 @@ public class StatusReport extends AppCompatActivity {
 
         diseaseref =  fStore.collection("Diseases").document(diseaseName);
         userRef = fStore.collection("users").document(userid);
+        statusRef = fStore.collection("status");
 
 
         //Get User Current Status
@@ -102,24 +111,24 @@ public class StatusReport extends AppCompatActivity {
 
 
 
-        //Get User Name & Phone
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot userDocument = task.getResult();
-                    if(userDocument.exists()){
-                        FName = userDocument.getString("FirstName");
-                        LName = userDocument.getString("LastName");
-                        userpktdata = userDocument.getString("ServiceData");
-
-                        userPhone = userDocument.getString("PhoneNumber");}
-                    Log.d(TAG, "onComplete: Got user details");
-                    }else{
-                    Log.d(TAG,"Failed getting user details");
-                }
-            }
-        });
+//        //Get User Name & Phone
+//        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if(task.isSuccessful()){
+//                    DocumentSnapshot userDocument = task.getResult();
+//                    if(userDocument.exists()){
+//                        FName = userDocument.getString("FirstName");
+//                        LName = userDocument.getString("LastName");
+//                        userpktdata = userDocument.getString("ServiceData");
+//
+//                        userPhone = userDocument.getString("PhoneNumber");}
+//                    Log.d(TAG, "onComplete: Got user details");
+//                    }else{
+//                    Log.d(TAG,"Failed getting user details");
+//                }
+//            }
+//        });
 
 
 
@@ -152,6 +161,7 @@ public class StatusReport extends AppCompatActivity {
 
                     userRef.update("Status",newStatus);
                     diseaseref.update("Counter",FieldValue.increment(1));
+                    statusRef.document("Positive").update("Counter", FieldValue.increment(1));
                     casesCollection.set(positive_case).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

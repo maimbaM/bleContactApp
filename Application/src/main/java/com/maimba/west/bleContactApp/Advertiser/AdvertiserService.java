@@ -81,18 +81,18 @@ public class AdvertiserService extends Service {
         ContractTracingDB database = ContractTracingDB.getInstance(getApplicationContext());
         scannedDao = database.scannedDao();
 
-        class newThread extends Thread{
-            @Override
-            public void run() {
-//                LL =  scannedDao.selectLastLocation();
-                Constants.SERVICE_DATA = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
-
-            }
-        }
-
-
-        newThread PP = new newThread();
-        PP.start();
+//        class newThread extends Thread{
+//            @Override
+//            public void run() {
+////                LL =  scannedDao.selectLastLocation();
+////                Constants.SERVICE_DATA = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
+//
+//            }
+//        }
+//
+//
+//        newThread PP = new newThread();
+//        PP.start();
 
 
         running = true;

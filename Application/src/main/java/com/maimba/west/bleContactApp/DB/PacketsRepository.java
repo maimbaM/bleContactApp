@@ -16,6 +16,7 @@ public class PacketsRepository {
     private LiveData<List<ScannedPacket>> allScanPkts;
     private LiveData<List<ExposurePacket>> allExpPkts;
     private LiveData<List<MatchedPackets>> allMatchedPkts;
+    private LiveData<List<String >> allServData;
     private LiveData<List<String>> allExpUID;
     private String deviceLocation2;
 
@@ -28,6 +29,7 @@ public class PacketsRepository {
 //        allExpPkts = scannedDao.getAllExpPkts();
         allMatchedPkts = scannedDao.getMatchedPackets();
         allExpUID = scannedDao.getExpUID();
+//        allServData = scannedDao.getIfServiceData();
         workManager = WorkManager.getInstance(application);
     }
 
@@ -36,6 +38,8 @@ public class PacketsRepository {
     }
 
 //    Query Methods
+
+    //LiveData
 
     public LiveData<List<MatchedPackets>> getMatchedPackets(){
         return allMatchedPkts;
@@ -48,6 +52,10 @@ public class PacketsRepository {
     public LiveData<List<String>> getAllExpUID() {
         return allExpUID;
     }
+
+//    public LiveData<List<String >> getAllServData(){ return allServData;}
+
+
     // Scanned Table Methods
 
     public void insert(ScannedPacket scannedPacket){

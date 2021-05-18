@@ -9,6 +9,9 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,7 +22,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.maimba.west.bleContactApp.DB.ContractTracingDB;
+import com.maimba.west.bleContactApp.DB.PacketsRepository;
+import com.maimba.west.bleContactApp.DB.PacketsViewModel;
+import com.maimba.west.bleContactApp.DB.ScannedDao;
+import com.maimba.west.bleContactApp.DB.ServiceData;
 import com.maimba.west.bleContactApp.Scanner.LocationService;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
+import java.security.SecureRandom;
+import java.util.List;
 
 import static com.maimba.west.bleContactApp.Register.TAG;
 
@@ -28,6 +41,12 @@ public class App extends Application {
     public String currentDiseaseName;
     public long currentDiseaseInc;
     private CollectionReference collectionReference;
+    private PacketsViewModel packetsViewModel;
+    private PacketsRepository packetsRepository;
+    private Context mcontext;
+    private ScannedDao scannedDao;
+    private String servData;
+
 
 
 
@@ -36,6 +55,45 @@ public class App extends Application {
         super.onCreate();
         createNotificationChannel();
         firestore = FirebaseFirestore.getInstance();
+        mcontext = getApplicationContext();
+
+//        packetsViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(PacketsViewModel.class);
+        ContractTracingDB database = ContractTracingDB.getInstance(mcontext);
+        scannedDao = database.scannedDao();
+
+
+        class newThread extends Thread{
+            @Override
+            public void run() {
+//                LL =  scannedDao.selectLastLocation();
+//                Constants.SERVICE_DATA = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
+                servData = scannedDao.selectServiceData();
+
+                if (servData == null){
+
+                    servData = RandomStringUtils.random(20, 0, 0, true, false, null, new SecureRandom());;
+
+                    ServiceData serviceData = new ServiceData(servData);
+                    scannedDao.insertServiceData(serviceData);
+                    Log.d(TAG, "run: Added SErvice Data");
+                }else{
+                    Constants.SERVICE_DATA = scannedDao.selectServiceData();
+                    Log.d(TAG, "onCreate: Service Data" + Constants.SERVICE_DATA);
+                }
+            }
+        }
+
+
+
+
+
+        newThread serv = new newThread();
+        serv.start();
+
+
+
+
+
 
         collectionReference = firestore.collection("Diseases");
         Query dQuery = collectionReference.whereEqualTo("Current" , true);

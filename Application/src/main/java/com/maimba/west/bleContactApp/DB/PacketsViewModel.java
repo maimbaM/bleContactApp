@@ -15,6 +15,7 @@ public class PacketsViewModel extends AndroidViewModel {
      private LiveData<List<ExposurePacket>> allExpPackets;
      private LiveData<List<MatchedPackets>> allMatchedPackets;
      private LiveData<List<String>> allExpUID;
+//     private LiveData<List<String >> allServData;
 
 
     public PacketsViewModel(@NonNull Application application) {
@@ -24,6 +25,7 @@ public class PacketsViewModel extends AndroidViewModel {
         allScanPackets = repository.getAllScanPkts();
         allMatchedPackets = repository.getMatchedPackets();
         allExpUID = repository.getAllExpUID();
+//        allServData = repository.getAllServData();
 
 
     }

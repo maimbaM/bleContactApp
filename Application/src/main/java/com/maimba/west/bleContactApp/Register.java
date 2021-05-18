@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.maimba.west.bleContactApp.DB.PacketsViewModel;
 import com.maimba.west.bleContactApp.DB.ServiceData;
@@ -44,6 +45,7 @@ public class Register extends AppCompatActivity {
     private String packetData;
     private String status;
     private PacketsViewModel packetsViewModel;
+    private DocumentReference statusref;
 
 
     @Override
@@ -55,8 +57,7 @@ public class Register extends AppCompatActivity {
         // Set packet Service Data
         packetsViewModel = new ViewModelProvider(this).get(PacketsViewModel.class);
         packetData =Constants.SERVICE_DATA;
-        ServiceData serviceData = new ServiceData(packetData);
-        packetsViewModel.insertServiceData(serviceData);
+        Log.d(TAG, "onCreate: Data : " + packetData);
 
         registerEmail = findViewById(R.id.editTextTextEmailAddress);
         registerPassword = findViewById(R.id.registerPassword);
@@ -69,6 +70,7 @@ public class Register extends AppCompatActivity {
         status = "Negative";
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        statusref = fStore.collection("status").document("Negative");
 
 
 
@@ -134,6 +136,7 @@ public class Register extends AppCompatActivity {
                                 Toast.makeText(Register.this, "You have been registered Successfully", Toast.LENGTH_LONG).show();
                             }
                         });
+                        statusref.update("Counter", FieldValue.increment(1));
 
                         //Send user to main activity
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));

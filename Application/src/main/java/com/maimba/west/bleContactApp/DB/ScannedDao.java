@@ -60,6 +60,8 @@ public interface ScannedDao {
 
     @Query("SELECT ServiceData_Table.serviceData FROM ServiceData_Table WHERE id=(SELECT max(id) FROM ServiceData_Table)")
     String selectServiceData();
+    @Query("SELECT ServiceData_Table.serviceData FROM ServiceData_Table ")
+    List<String> getIfServiceData();
 
 
 

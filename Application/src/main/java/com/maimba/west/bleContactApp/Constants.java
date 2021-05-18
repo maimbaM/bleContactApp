@@ -25,7 +25,6 @@ public class Constants {
     public static long currentDiseaseInc;
 
 
-
     public static final int REQUEST_ENABLE_BT = 1;
 
 }
