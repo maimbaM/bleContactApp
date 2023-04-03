@@ -1,19 +1,586 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg1"
-    tools:context=".Symptoms">
+    tools:context=".Home.DiseaseSymptoms">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/Covid"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Symptoms of current Outbreak"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        android:layout_marginTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/sm_linearlayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+
+            <TextView
+                android:id="@+id/sm_Covid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:padding="5dp"
+                android:text="@string/covid"
+
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/sm_expandable_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/Loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/sm_Incubation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" Incubation Period : 14 days"
+                        android:textColor="@color/gray"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_weight="1"
+
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:id="@+id/sm_SccienceName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scientific Name: severe acute respiratory syndrome coronavirus 2  (SARS-CoV-2)"
+                        android:layout_weight="3"
+                        android:textColor="@color/gray"
+                        android:fontFamily="@font/montserrat"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/Loc">
+                    <TextView
+                        android:id="@+id/sm_Common"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/covidSym"
+                        android:padding="5dp"
+                        android:textColor="@color/teal_700"
+                        android:layout_weight="2"
+                        android:fontFamily="@font/montserrat"/>
+
+                    <TextView
+                        android:id="@+id/sm_Severe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:padding="5dp"
+                        android:text="@string/covidSevere"
+                        android:textColor="@color/teal_700"
+                        android:fontFamily="@font/montserrat"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/Ebola"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:id="@+id/eb_linearlayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+
+            <TextView
+                android:id="@+id/sm_Ebola"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:padding="5dp"
+                android:text="@string/Ebola"
+
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                />
+
+
+            <RelativeLayout
+                android:id="@+id/eb_expandable_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/eb_Loc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/eb_Incubation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Incubation Period : 8-10 days"
+                        android:textColor="@color/gray"
+                        android:fontFamily="@font/montserrat"
+                        android:layout_weight="1"
+
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:id="@+id/eb_ScienceName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scientific Name : Zaire ebolavirus"
+                        android:layout_weight="1"
+                        android:textColor="@color/gray"
+                        android:fontFamily="@font/montserrat"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/eb_Loc"
+                    >
+                    <TextView
+                        android:id="@+id/eb_Common"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ebolaSym"
+                        android:padding="5dp"
+                        android:textColor="@color/teal_700"
+                        android:fontFamily="@font/montserrat"/>
+
+
+
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:id="@+id/Diptheria"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/dp_linearlayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:id="@+id/sm_diptheria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="5dp"
+                    android:text="@string/Diptheria"
+
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    />
+
+
+                <RelativeLayout
+                    android:id="@+id/dp_expandable_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/dp_Loc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/dp_Incubation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Incubation Period : 2-5 days"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_weight="1"
+
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/dp_ScienceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scientific Name : Corynebacterium diphtheriae"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@id/dp_Loc"
+                        >
+                        <TextView
+                            android:id="@+id/dp_Common"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dipSym"
+                            android:padding="5dp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+                        <TextView
+                            android:id="@+id/dp_Severe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="5dp"
+                            android:text="@string/dpSevere"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:id="@+id/TB"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/tb_linearlayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:id="@+id/sm_TB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="5dp"
+                    android:text="@string/TB"
+
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    />
+
+
+                <RelativeLayout
+                    android:id="@+id/tb_expandable_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/tb_Loc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tb_Incubation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Incubation Period : 2 - 12 Weeks"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_weight="1"
+
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/tb_ScienceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scientific Name : Mycobacterium tuberculosis"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@id/tb_Loc"
+                        >
+                        <TextView
+                            android:id="@+id/tb_Common"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/TBSym"
+                            android:padding="5dp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+                        <TextView
+                            android:id="@+id/tb_Severe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="5dp"
+                            android:text="@string/TBSevere"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:id="@+id/Flu"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/fl_linearlayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:id="@+id/sm_fl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="5dp"
+                    android:text="@string/flu"
+
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    />
+
+
+                <RelativeLayout
+                    android:id="@+id/fl_expandable_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/fl_Loc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/fl_Incubation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Incubation Period : 1 - 4 days"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_weight="1"
+
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/fl_ScienceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scientific Name : Orthomyxoviridae"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@id/fl_Loc"
+                        >
+                        <TextView
+                            android:id="@+id/fl_Common"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/flSym"
+                            android:padding="5dp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+                        <TextView
+                            android:id="@+id/fl_Severe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="5dp"
+                            android:text="@string/flSevere"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+
+            android:id="@+id/Cholera"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:id="@+id/ch_linearlayout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:id="@+id/sm_ch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:padding="5dp"
+                    android:text="@string/Cholera"
+
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    />
+
+
+                <RelativeLayout
+                    android:id="@+id/ch_expandable_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/ch_Loc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/ch_Incubation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Incubation Period : 2 hrs - 5 days"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"
+                            android:layout_weight="1"
+
+                            android:padding="5dp" />
+
+                        <TextView
+                            android:id="@+id/ch_ScienceName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Scientific Name : Vibrio cholerae"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray"
+                            android:fontFamily="@font/montserrat"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_below="@id/ch_Loc"
+                        >
+                        <TextView
+                            android:id="@+id/ch_Common"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/chSym"
+                            android:padding="5dp"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+                        <TextView
+                            android:id="@+id/ch_Severe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3"
+                            android:padding="5dp"
+                            android:text="@string/chSevere"
+                            android:textColor="@color/teal_700"
+                            android:fontFamily="@font/montserrat"/>
+
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</ScrollView>

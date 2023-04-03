@@ -8,31 +8,39 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-        <activity android:name=".RegisterUser"></activity>
-        <activity
-            android:name=".ExposureCheck"
-            android:theme="@style/Theme.AppCompat">
+        android:theme="@style/Theme.Apptheme">
+        <activity android:name=".Home.Cases"></activity>
+        <activity android:name=".Home.Victims" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScreenMain" />
-        <activity android:name=".StatusReport" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".Symptoms" />
+        <activity android:name=".Home.ScreenMain" />
+        <activity android:name=".Home.StatusReport" />
+        <activity android:name=".Home.DiseaseSymptoms" />
+        <activity android:name=".Home.Statistics" />
+        <activity android:name=".Home.ExposureCheck" />
+        <activity android:name=".login" />
+        <activity android:name=".Register" />
 
         <service
-            android:name=".AdvertiserService"
+            android:name=".Advertiser.AdvertiserService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name=".Scanner.LocationService"
             android:enabled="true"
             android:exported="false" />
     </application>

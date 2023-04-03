@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="com.maimba.west.bleContactApp.AdvertiserFragment">
+    tools:context="com.maimba.west.bleContactApp.Advertiser.AdvertiserFragment">
 
     <!-- Horizontal Divider -->
     <View
@@ -21,18 +21,18 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp" >
 
-        <TextView
-            android:text="@string/start_advertising"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:minWidth="100dp"
-            android:padding="5dp"/>
+<!--        <TextView-->
+<!--            android:text="@string/start_advertising"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:minWidth="100dp"-->
+<!--            android:padding="5dp"/>-->
 
-        <Switch
-            android:id="@+id/advertise_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:switchMinWidth="80dp" />
+<!--        <Switch-->
+<!--            android:id="@+id/advertise_switch"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:switchMinWidth="80dp" />-->
 
 
 
